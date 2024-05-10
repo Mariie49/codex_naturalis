@@ -1,4 +1,4 @@
-package carta;
+package card;
 
 public enum Symbol {
 	MUSHROOM,
