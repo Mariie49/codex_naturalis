@@ -1,8 +1,8 @@
 package card;
 
-public enum Symbol {
+public enum Symbol implements ArtifactOrSymbol {
 	MUSHROOM,
 	FOX,
-	GRASS,
+	LEAF,
 	BUTTERFLY
 }
