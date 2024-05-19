@@ -3,11 +3,20 @@ package card;
 public class Corner {
 	
 	boolean connected;
-	ArtifactOrSymbol drawing;
+	Symbol symbol;
+	Artifact artifact;
+	cornerState state;
 	
-	public Corner(boolean connected, ArtifactOrSymbol drawing) {
+	public Corner(boolean connected, Symbol symbol, Artifact artifact, cornerState state) {
 		this.connected = connected;
-		this.drawing = drawing;
+		this.symbol = symbol;
+		this.artifact = artifact;
+		this.state = state;
 	}
+	
+	public enum cornerState{
+		NULL, EMPTY, SYMBOL, ARTIFACT
+	}
+	
 	
 }

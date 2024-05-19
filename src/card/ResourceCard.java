@@ -4,12 +4,10 @@ import java.util.ArrayList;
 
 public class ResourceCard extends Card {
 
-	Symbol symbol;
-
-	public SimpleCard(ArrayList<Corner> corners, boolean hasPoint) {
-		super(corners, hasPoint);
+	public ResourceCard(Color color, int points, ArrayList<Corner> corners, Symbol symbol, ArrayList<Side> sides) {
+		super(color, points, corners, symbol, sides);
 		// TODO Auto-generated constructor stub
 	}
-	
+
 	
 }

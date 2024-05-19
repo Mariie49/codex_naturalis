@@ -5,13 +5,14 @@ import java.util.ArrayList;
 import card.Corner;
 import card.GoldCard;
 import card.InsideCorner;
+import card.Corner.cornerState;
 
 public class Main {
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		ArrayList<Corner> corners1 = new ArrayList<>();
-        corners1.add(new Corner(InsideCorner.ARTEFACT));
+        corners1.add(new Corner(true, drawing., cornerState.SYMBOL));
         corners1.add(new Corner(InsideCorner.EMPTY));
         corners1.add(new Corner(InsideCorner.EMPTY));
         corners1.add(new Corner(InsideCorner.ARTEFACT));
