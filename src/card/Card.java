@@ -14,7 +14,7 @@ public abstract class Card {
 	private int score; // Punteggio della carta
 	private ArrayList<Symbol> centerSymbols; // Simboli al centro della carta (massimo 3)
 	private boolean hasCenterSymbols; // Flag per indicare la presenza di simboli al centro
-
+	private ArrayList<Symbol> requirement;
 	// Costruttore
 	 /**
      * Constructs a Card with the specified properties.
@@ -37,7 +37,17 @@ public abstract class Card {
 		this.hasCenterSymbols = hasCenterSymbols;
 	}
 
-
+	//For GoldCard Class
+	public Card(CardType type, boolean isFront, ArrayList<Corner> frontCorners, ArrayList<Corner> backCorners, int score, boolean hasCenterSymbols, ArrayList<Symbol> centerSymbols,ArrayList<Symbol> requirement) {
+		this.type = type;
+		this.isFront = isFront;
+		this.frontCorners = frontCorners;
+	    this.backCorners = backCorners;
+		this.score = score;
+		this.centerSymbols = centerSymbols;
+		this.hasCenterSymbols = hasCenterSymbols;
+		this.requirement = requirement;
+	}
 	// Metodo privato per creare un angolo 
 	 /**
      * Creates a new Corner with the specified properties.

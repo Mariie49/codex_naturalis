@@ -7,7 +7,7 @@ import java.util.Random;
 	 * Represents a resource card in the game, which extends the Card class.
 	 */
 	public class ResourceCard extends Card {
-		//private static final int NUM_CARDS = 40;
+		
 		private static final int NUM_CARDS_PER_KINGDOM = 10;
 		private static ArrayList<Card> resourceCardsDeck;
 		/**
