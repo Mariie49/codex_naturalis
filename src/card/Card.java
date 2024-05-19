@@ -38,16 +38,13 @@ public abstract class Card {
 	}
 
 	//For GoldCard Class
-	public Card(CardType type, boolean isFront, ArrayList<Corner> frontCorners, ArrayList<Corner> backCorners, int score, boolean hasCenterSymbols, ArrayList<Symbol> centerSymbols,ArrayList<Symbol> requirement) {
-		this.type = type;
-		this.isFront = isFront;
-		this.frontCorners = frontCorners;
-	    this.backCorners = backCorners;
-		this.score = score;
-		this.centerSymbols = centerSymbols;
-		this.hasCenterSymbols = hasCenterSymbols;
-		this.requirement = requirement;
+
+	public Card(CardType gold, boolean b, ArrayList<Corner> firstFrontCorners, ArrayList<Corner> backFirstCorners,
+			int points, boolean c, ArrayList<Symbol> arrayList, ArrayList<Symbol> requirements,
+			SpecialSymbol firstSpecialSymbol) {
+		// TODO Auto-generated constructor stub
 	}
+
 	// Metodo privato per creare un angolo 
 	 /**
      * Creates a new Corner with the specified properties.

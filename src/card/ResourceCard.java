@@ -42,14 +42,13 @@ import java.util.Random;
 	            Corner fCorner4 = createCorner(CornerState.EMPTY, null, null, true);
 	            
 	            ArrayList<Corner> firstFrontCorners = new ArrayList<>();
-	            frontCorners.add(fCorner1);
-	            frontCorners.add(fCorner2);
-	            frontCorners.add(fCorner3);
-	            frontCorners.add(fCorner4); 
+	            firstFrontCorners.add(fCorner1);
+	            firstFrontCorners.add(fCorner2);
+	            firstFrontCorners.add(fCorner3);
+	            firstFrontCorners.add(fCorner4); 
 
 	            ArrayList<Corner> backFirstCorners = createBackCorners();
 	       
-
 	            Card fCard = new Card(CardType.RESOURCE, true, firstFrontCorners, backFirstCorners, 1, false, new ArrayList<>()) {
 	                @Override
 	                public void play() {
@@ -148,10 +147,10 @@ import java.util.Random;
 			    Corner firstCorner4 = createCorner(CornerState.NULL, null, null, true);
 			    
 			    ArrayList<Corner> firStFrontCorners = new ArrayList<>();
-			    frontCorners.add(firstCorner1);
-			    frontCorners.add(firstCorner2);
-			    frontCorners.add(firstCorner3);
-			    frontCorners.add(firstCorner4); 
+			    firStFrontCorners.add(firstCorner1);
+			    firStFrontCorners.add(firstCorner2);
+			    firStFrontCorners.add(firstCorner3);
+			    firStFrontCorners.add(firstCorner4); 
 
 			    ArrayList<Corner> backFirStCorners = createBackCorners();
 
