@@ -14,7 +14,6 @@ public abstract class Card {
 	private int score; // Punteggio della carta
 	private ArrayList<Symbol> centerSymbols; // Simboli al centro della carta (massimo 3)
 	private boolean hasCenterSymbols; // Flag per indicare la presenza di simboli al centro
-	private ArrayList<Symbol> requirement;
 	// Costruttore
 	 /**
      * Constructs a Card with the specified properties.
