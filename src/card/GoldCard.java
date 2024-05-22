@@ -127,7 +127,7 @@ public class GoldCard extends Card {
 
 				GoldCardsDeck.add(gCard2);
 
-			} 
+			}
 		}
 	}
 
