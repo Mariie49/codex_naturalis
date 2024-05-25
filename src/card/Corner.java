@@ -190,4 +190,18 @@ public class Corner {
 	public boolean isSpecialSymbol() {
 		return state == CornerState.SPECIALSYMBOL;
 	}
+	
+	//
+	 public boolean covers(Corner other) {
+	        // Implementa la logica per verificare se questo angolo copre l'altro angolo
+	        // La logica dipenderà dalla definizione esatta di "coprire" nel contesto del gioco
+	        // Ecco un esempio di logica semplificata
+
+	        // Supponiamo che la copertura significhi che questo angolo ha lo stesso stato e simbolo
+	        if (this.state == other.state && this.symbol == other.symbol) {
+	            return true;
+	        }
+
+	        return false;
+	    }
 }
