@@ -126,6 +126,17 @@ public abstract class Card {
 		this.hasCenterSymbols = hasCenterSymbols;
 	}
 
+	@Override
+	public String toString() {
+		return "Card [type=" + type + ", isFront=" + isFront + ", frontCorners=/n/n" + frontCorners + ", backCorners="
+				+ backCorners + ", score=" + score + ", centerSymbols=" + centerSymbols + ", hasCenterSymbols=/n"
+				+ hasCenterSymbols + ", getType()=" + getType() + ", isFront()=" + isFront() + ", getCorners()=/n"
+				+ getCorners() + ", getFrontCorners()=" + getFrontCorners() + ", getBackCorners()=" + getBackCorners()
+				+ ", getScore()=/n/n" + getScore() + ", getCenterSymbols()=" + getCenterSymbols() + ", hasCenterSymbols()="
+				+ hasCenterSymbols() + ", getClass()=" + getClass() + ", hashCode()=" + hashCode() + ", toString()="
+				+ super.toString() + "]";
+	}
+
 	// Metodo astratto da implementare nelle sottoclassi
 	/**
      * Abstract method that defines how the card is played.

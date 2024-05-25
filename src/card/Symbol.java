@@ -9,7 +9,7 @@ import java.util.Random;
 	public enum Symbol {
 		PLANT_KINGDOM,
 		ANIMAL_KINGDOM,
-		FUNGI_KINGDOM,
+		MUSHROOM_KINGDOM,
 		INSECT_KINGDOM;
 		
 		 /**

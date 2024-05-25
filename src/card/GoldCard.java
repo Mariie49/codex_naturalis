@@ -6,8 +6,7 @@ import java.util.Random;
 
 public class GoldCard extends Card {
 
-	private static final int NUM_CARDS_PER_KINGDOM = 10;
-	private static ArrayList<Card> GoldCardsDeck;
+	private static ArrayList<Card> GoldCardsDeck = new ArrayList<>();
 	private static int points;
 	private static SpecialSymbol firstSpecialSymbol;
 	private ArrayList<Card> board = new ArrayList<>();
@@ -28,7 +27,7 @@ public class GoldCard extends Card {
 		ArrayList<Symbol> kingdoms = new ArrayList<>();
 		kingdoms.add(Symbol.PLANT_KINGDOM);
 		kingdoms.add(Symbol.ANIMAL_KINGDOM);
-		kingdoms.add(Symbol.FUNGI_KINGDOM);
+		kingdoms.add(Symbol.MUSHROOM_KINGDOM);
 		kingdoms.add(Symbol.INSECT_KINGDOM);
 
 		for (Symbol kingdom : kingdoms) {
@@ -37,6 +36,34 @@ public class GoldCard extends Card {
 			createThreePointsCards(kingdom);
 			createFivePointsCards(kingdom);
 		}
+	}
+
+	/**
+	 * @return the goldCardsDeck
+	 */
+	public static ArrayList<Card> getGoldCardsDeck() {
+		return GoldCardsDeck;
+	}
+
+	/**
+	 * @return the points
+	 */
+	public static int getPoints() {
+		return points;
+	}
+
+	/**
+	 * @param goldCardsDeck the goldCardsDeck to set
+	 */
+	public static void setGoldCardsDeck(ArrayList<Card> goldCardsDeck) {
+		GoldCardsDeck = goldCardsDeck;
+	}
+
+	/**
+	 * @param points the points to set
+	 */
+	public static void setPoints(int points) {
+		GoldCard.points = points;
 	}
 
 	private void createOnePointCards(Symbol kingdom) {
@@ -146,11 +173,11 @@ public class GoldCard extends Card {
 
 	private ArrayList<Symbol> createRequirementsForTwoPoints(Symbol kingdom, ArrayList<Symbol> usedRequirements) {
 		ArrayList<Symbol> requirements = new ArrayList<>();
-		requirements.add(kingdom);
-		requirements.add(kingdom);
-		requirements.add(kingdom);
+		for(int i = 0; i < 3; i ++) {
+			requirements.add(kingdom);
+		}
+		
 		usedRequirements.add(kingdom);
-
 		for (int i = 0; i < 3; i++) {
 			Symbol symbol;
 			do {
@@ -205,6 +232,7 @@ public class GoldCard extends Card {
 				@Override
 				public void play() {
 					// Implement the play method for the GoldCard
+					this.setScore(3);
 				}
 			};
 
@@ -230,8 +258,6 @@ public class GoldCard extends Card {
 		
 		for(int i = 0; i < 2 ; i++) {
 			requirements.add(kingdom);
-			requirements.add(kingdom);
-			requirements.add(kingdom);
 		}
 		
 		return requirements;
@@ -246,6 +272,7 @@ public class GoldCard extends Card {
 			@Override
 			public void play() {
 				// Implement the play method for the GoldCard
+				this.setScore(5);
 			}
 		};
 
@@ -269,6 +296,8 @@ public class GoldCard extends Card {
 		frontCorners.add(createCorner(CornerState.EMPTY, null,null, true));
 		frontCorners.add(createCorner(CornerState.NULL, null, null, true));
 		frontCorners.add(createCorner(CornerState.NULL, null, null, true));
+		
+		Collections.shuffle(frontCorners);
 
 		return frontCorners;
 	}

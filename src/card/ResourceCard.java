@@ -26,7 +26,7 @@ import java.util.Random;
 			ArrayList<Symbol> kingdoms = new ArrayList<>();
 			kingdoms.add(Symbol.PLANT_KINGDOM);
 			kingdoms.add(Symbol.ANIMAL_KINGDOM);
-			kingdoms.add(Symbol.FUNGI_KINGDOM);
+			kingdoms.add(Symbol.MUSHROOM_KINGDOM);
 			kingdoms.add(Symbol.INSECT_KINGDOM); 
 			Corner corn = new Corner();
 			resourceCardsDeck = new ArrayList<>();
