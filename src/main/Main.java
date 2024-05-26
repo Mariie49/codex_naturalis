@@ -1,7 +1,7 @@
 package main;
 
 import java.util.ArrayList;
-
+import card.ResourceCard;
 import card.Card;
 import card.GoldCard;
 
@@ -10,13 +10,16 @@ public class Main {
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
+		
+		ResourceCard a = new ResourceCard();
+		
 		GoldCard goldCard = new GoldCard();
 		ArrayList<Card> goldCardsDeck = GoldCard.getGoldCardsDeck();
-
-        // Stampa le carte del mazzo
-        for (Card card : goldCardsDeck) {
-            System.out.println(card);
-        }
+		goldCard= GoldCard.drawCard();
+		goldCard.printCard();
+		a.printCard();
+		
+		
 	}
 
 }

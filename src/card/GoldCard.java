@@ -211,7 +211,7 @@ public class GoldCard extends Card {
 
 		// Supponiamo che board sia una lista di tutte le carte in gioco
 		for (Card existingCard : board) {
-			for (Corner existingCorner : existingCard.getFrontCorners()) {
+			for (Corner existingCorner : existingCard.getCorners()) {
 				if (corner.covers(existingCorner)) {
 					return true;
 				}
