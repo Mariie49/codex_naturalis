@@ -10,10 +10,11 @@ import java.util.ArrayList;
 public class Corner {
 
 	private CornerState state; // Stato dell'angolo (nullo, nascosto, simbolo, simbolo speciale)
-	private Symbol symbol; // Simbolo dell'angolo (può essere null se lo stato è NULL,HIDDEN o SPECIALSYMBOL)
-	private SpecialSymbol specialSymbol; // Simbolo speciale (se lo stato è SPECIAL_SYMBOL)
+	private Symbol symbol; // Simbolo dell'angolo (puÃ² essere null se lo stato Ã¨ NULL,HIDDEN o SPECIALSYMBOL)
+	private SpecialSymbol specialSymbol; // Simbolo speciale (se lo stato Ã¨ SPECIAL_SYMBOL)
+	private CornerPosition position; // Memorizza direttamente la posizione del corner
 	private boolean isFront; // True se l'angolo appartiene al fronte della carta, false se al retro
-	private boolean isCovered = false; // Flag per indicare se l'angolo è coperto
+	private boolean isCovered = false; // Flag per indicare se l'angolo Ã¨ coperto
 	private Card card;
 
 	 /**
@@ -58,7 +59,7 @@ public class Corner {
      * @return the symbol of the corner, or null if the state is not SYMBOL
      */
 	public Symbol getSymbol() {
-		    if (state == CornerState.SYMBOL) {
+		    if (state.equals(CornerState.SYMBOL)) {
 		    	return symbol;
 		    } else {
 		      return null;
@@ -85,7 +86,7 @@ public class Corner {
      * @return the special symbol of the corner, or null if the state is not SPECIALSYMBOL
      */
 	public SpecialSymbol getSpecialSymbol() {
-	    if (state == CornerState.SPECIALSYMBOL) {
+	    if (state.equals(CornerState.SPECIALSYMBOL)) {
 	      return specialSymbol;
 	    } else {
 	      return null;
@@ -100,11 +101,19 @@ public class Corner {
      */
 	
 	public void setSpecialSymbol(SpecialSymbol specialSymbol) {
-	    if (state != CornerState.SPECIALSYMBOL) {
+	    if (!state.equals(CornerState.SPECIALSYMBOL)) {
 	      throw new IllegalArgumentException("Impossibile impostare un simbolo speciale per uno stato diverso da SPECIAL_SYMBOL");
 	    }
 	    this.specialSymbol = specialSymbol;
 	  }
+	
+	public void setPosition(CornerPosition position) {
+        this.position = position;
+    }
+	
+	public CornerPosition getPosition() {
+        return position; // Restituisce direttamente la posizione
+    }
 	
 	/**
      * Checks if the corner is on the front side of the card.
@@ -124,7 +133,7 @@ public class Corner {
 		this.isFront = isFront;
 	}
 	
-	// Metodo per stampare le informazioni dell'angolo (utile per il debug)
+	// Metodo per stampare le informazioni dell'angolo 
 	/**
      * Prints the details of the corner.
      */
@@ -143,22 +152,22 @@ public class Corner {
 	     * @param inputList: the input ArrayList of Corner variables.
 	     * @return Returns a new ArrayList with positions shifted as described.
 	     */
-	    public ArrayList<Corner> shiftCornerPositions(ArrayList<Corner> inputList) {
+	    public static ArrayList<Corner> shiftCornerPositions(ArrayList<Corner> inputList) {
 	        ArrayList<Corner> shiftedList = new ArrayList<>();
 	        int size = inputList.size();
 
 	        // Move each corner to the next position
-	        for (int i = 0; i < size - 1; i++) {
-	            shiftedList.add(inputList.get(i + 1));
+	        for (int i = 0; i < size-1 ; i++) {
+	            shiftedList.add(inputList.get(i+1));
 	        }
-
+	        
 	        // Move the last corner to the first position
 	        shiftedList.add(inputList.get(0));
 
 	        return shiftedList;
 	    }
 	    
-	 // Getter per la carta
+	 
 	    public Card getCard() {
 	        return card;
 	    }
@@ -169,11 +178,13 @@ public class Corner {
 	    public void setCovered(boolean covered) {
 	        isCovered = covered;
 	    }
-
-	    // Getter per la posizione
-	    public CornerPosition getPosition() {
+	    
+	   
+	    /*
+	     * public CornerPosition getPosition() {
+	    	//verifica se il corner Ã¨ associato ad una carta
 	        if (card == null) {
-	            throw new IllegalStateException("Il corner non è associato a nessuna carta.");
+	            throw new IllegalStateException("Il corner non Ã¨ associato a nessuna carta.");
 	        }
 
 	        ArrayList<Corner> corners = card.getCorners();
@@ -183,8 +194,9 @@ public class Corner {
 	            }
 	        }
 
-	        throw new IllegalStateException("Il corner non è stato trovato nella lista degli angoli della carta.");
+	        throw new IllegalStateException("Il corner non Ã¨ stato trovato nella lista degli angoli della carta.");
 	    }
+	     */
 	// methods for checking the corner status
 	/*
 	 * isNull(): Returns true if the corner state is CornerState.NULL, false otherwise.
@@ -226,5 +238,10 @@ public class Corner {
 
 	public boolean isSpecialSymbol() {
 		return state == CornerState.SPECIALSYMBOL;
+	}
+	//AGGIUNTO CAUSA GOLDCARD. METODO DA SISTEMARE
+	public boolean covers(Corner existingCorner) {
+		// TODO Auto-generated method stub
+		return false;
 	}
 }
