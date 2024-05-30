@@ -12,12 +12,13 @@ public class Main {
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
+		ArrayList<Corner> corners = new ArrayList<>();
 		ArrayList<Card> deck = new ArrayList<>();
 		Random random = new Random();
 
         // Creare e distribuire i Corner alle 80 carte
         for (int i = 0; i <2; i++) {
-            ArrayList<Corner> corners = new ArrayList<>();
+      
             
             for (int j = 1; j <= 4; j++) {
                 CornerState state;
@@ -37,27 +38,17 @@ public class Main {
                         symbol = SpecialSymbol.values()[random.nextInt(SpecialSymbol.values().length)];
                         break;
                     case 3:
-                        state = CornerState.EMPTY;
-                        break;
-                    case 4:
                     	default:
                     		state = CornerState.NULL;
                     		break;
                     	
-                }
-
-                // Solo aggiungere il corner se non è NULL
-                if (state != CornerState.NULL) {
-                    corners.add(new Corner(j, state, symbol));
-                } else {
-                    // non è un corner ma un semplice spigolo 
-                    corners.add(null);
-                }
-                
+                }                
                 corners.add(new Corner(j, state, symbol));
             }
-            deck.add(new Card(corners));
+            
         }
+
+        deck.add(new Card(corners));
 
         // Stampa le carte per verifica
         for (Card card : deck) {
