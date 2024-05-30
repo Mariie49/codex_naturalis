@@ -1,4 +1,4 @@
-package card;
+package cards;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -195,7 +195,7 @@ public class GoldCard extends Card {
 
 		// Supponiamo di avere accesso al board di gioco tramite una variabile board
 		// Esempio semplificato, la logica esatta dipende da come è implementato il board
-		for (Corner corner : card.getFrontCorners()) {
+		for (Corner corner : card.getCorners()) {
 			if (isCornerCovered(corner)) {
 				coveredCorners++;
 			}
@@ -316,7 +316,7 @@ public class GoldCard extends Card {
 
 	}
 
-	public static GoldCard drawCard() {
+	public static Card drawCard() {
 
 		// Draw a random card from the deck
 		Random random = new Random();
