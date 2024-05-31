@@ -53,7 +53,7 @@ public abstract class ResourceCard {
 		int n=0;
 		
 		do{
-		 n=r.nextInt(12)+1;	
+		 n=r.nextInt(44)+1;	
 		 
 		}while(assignedResourceCards.contains(n));
 		
