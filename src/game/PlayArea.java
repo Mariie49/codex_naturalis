@@ -9,6 +9,7 @@ import cards.Corner;
 import cards.CornerPosition;
 import cards.CornerState;
 import cards.Symbol;
+import initialCard.InitialCard;
 
 /**
  * Represents the play area where cards are placed during the game.
@@ -63,7 +64,7 @@ public class PlayArea {
      * @param initialCard The initial card to be placed.
      * @throws IllegalArgumentException If the initial card is not of type STARTING.
      */
-	public void placeInitialCard(Card initialCard) {
+	public void placeInitialCard(InitialCard initialCard) {
 		if (initialCard.getType() != CardType.STARTING) { //penso che non serva
 			throw new IllegalArgumentException("The initial card must be of the STARTING type.");
 		}

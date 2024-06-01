@@ -1,7 +1,7 @@
 package game;
 import resourceCard.*;
 import cards.*;
-import goldcards.*;
+import goldCard.*;
 import initialCard.*;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -16,7 +16,9 @@ public class Game {
 	
 	    private ArrayList<Player> playerList;
 	    private ArrayList<ResourceCard> resourceCards;
+	    private ArrayList<ResourceCard> handPlayerResourceCards;
 	    private ArrayList<GoldCard> goldCards;
+	    private ArrayList<GoldCard> handPlayerGoldCards;
 	    //private ArrayList<ObjectiveCard> commonObjCard;
 	    private ArrayList <InitialCard> initCards;
 	    private ArrayList<ResourceCard> visibleResourceCards;
@@ -44,7 +46,8 @@ public class Game {
 	        initCards = new ArrayList<InitialCard>();
 	        visibleResourceCards = new ArrayList<ResourceCard>();
 	        visibleGoldCards = new ArrayList<GoldCard>();
-	        handPlayerCards = new ArrayList<Card>();
+	        handPlayerResourceCards= new ArrayList <ResourceCard>();
+	        handPlayerGoldCards = new ArrayList <GoldCard>();
 	        firstEndedPoint  = 1;
 	        currentTurn = 0;
 	        maxTurns = 0;
@@ -56,19 +59,26 @@ public class Game {
 	     * the constructor initialize a new game, using command line. 
 	     */
 	    public void initGame() {
+	    	ArrayList<ResourceCard> deckResourceCard;
+	    	ArrayList<GoldCard> deckGoldCard;
+	    	ArrayList<InitialCard> deckInitialCard;
 	        boolean stop;
 	        Random rand;
 	        int index;
 	        String name;
 	        //ArrayList<ObjectiveCard> allCommonGoals;
+	        deckResourceCard = new ArrayList<ResourceCard>();
 
 	        nPlayers = 0; //variabile che conta il numero di giocatori
 	        stop = false;
 	        rand = new Random();
 
-	        //allCommonGoals = new ArrayList<ObjectiveCard>();
-
+	        //deckCommonGoals = new ArrayList<ObjectiveCard>();
+	        deckResourceCard = new ArrayList<ResourceCard>();
+	        deckGoldCard = new ArrayList <GoldCard>();
+	        deckInitialCard = new ArrayList <InitialCard>();
 	        //Collections.addAll(resourceCard);
+	        
 	        //establishing players
 	        do {
 
@@ -80,7 +90,7 @@ public class Game {
 	            if (nPlayers > 0 && nPlayers < 4) {
 	                System.out.println("Vuoi aggiungiure un nuovo giocatore?");
 	                System.out.println("Si oppure no?");
-	                if (!inputValidation()) {
+	                if (!checkAnswer()) {
 	                    stop = true;
 	                    //System.out.println(nPlayers);
 	                }
@@ -88,7 +98,6 @@ public class Game {
 	            else{
 	                stop = true;
 	            }
-
 	            System.out.println(nPlayers);
 	        } while (nPlayers < 4 && !stop);
 
@@ -100,16 +109,22 @@ public class Game {
 	     
 	        for (int i = 0; i < 2; i++) {
 	        	// Draw two visible resource cards from the resource deck
-	            ResourceCard visibleResourceCard = ResourceCard.drawCard();
+	            ResourceCard visibleResourceCard = ResourceCard.assignResourceCard();
 	            visibleResourceCards.add(visibleResourceCard);
+	            for (ResourceCard r : visibleResourceCards) {
+	            	r.printCard();
+	            }
 	            
 	         // Draw two visible gold card from the gold deck
-		        GoldCard visibleGoldCard = GoldCard.drawCard();
+		        GoldCard visibleGoldCard = GoldCard.assignGoldCard();
 		        visibleGoldCards.add(visibleGoldCard);
+		        for (GoldCard g : visibleGoldCards) {
+	            	g.printCard();
+	            }
 		        
 		     // Draw two visible objective card from the objective deck
-		        ObjectiveCard comObjectiveCard = ObjectiveCard.drawCard();
-		        commonObjCard.add(comObjectiveCard);
+		     //   ObjectiveCard comObjectiveCard = ObjectiveCard.drawCard();
+		     //   commonObjCard.add(comObjectiveCard);
 	        }
 
 	        
@@ -119,25 +134,28 @@ public class Game {
 	        	player.setPlayArea(matchManuscript.getPlayArea());//non sono sicura dell'effettiva correttezza di questa riga
 	            // Draw two resource cards from the resource deck
 	            for (int i = 0; i < 2; i++) {
-	                ResourceCard resourceHandCard = ResourceCard.drawCard();
-	                handPlayerCards = player.addCardToHand(resourceHandCard);
+	                ResourceCard resourceHandCard = ResourceCard.assignResourceCard();
+	                handPlayerResourceCards = player.addResourceCardToHand(resourceHandCard);
 	            }
 
 	            // Draw one gold card from the gold deck
-	            GoldCard goldHandCard = GoldCard.drawCard();
-	            handPlayerCards = player.addCardToHand(goldHandCard);
+	            GoldCard goldHandCard = GoldCard.assignGoldCard();
+	            handPlayerGoldCards = player.addGoldCardToHand(goldHandCard);
 
 	            // Draw one initial card from the initial deck, choose orientation and place initial card
-	            InitialCard initialHandCard = InitialCard.drawCard(); //restituisce la carta nel verso scelto 
+	            InitialCard initialHandCard = InitialCard.assignInitialCard(); //restituisce la carta nel verso scelto 
 	            player.chooseOrientationAndPlaceInitialCard(initialHandCard); 
 	    
 	            
 	            
 	         // Draw two objective cards from the objective deck and choose one
-	                ObjectiveCard objectiveFirstHandCards = ObjectiveCard.drawCard();
-	                ObjectiveCard objectiveSecondHandCards = ObjectiveCard.drawCard();
+	               /*
+	                *  ObjectiveCard objectiveFirstHandCards = ObjectiveCard.drawCard();
+	                *  ObjectiveCard objectiveSecondHandCards = ObjectiveCard.drawCard();
 	     
-	                ObjectiveCard objectiveHandCards = player.chooseObjectiveCard(objectiveFirstHandCards, objectiveSecondHandCards); 
+	                ObjectiveCard objectiveHandCards = player.chooseObjectiveCard(objectiveFirstHandCards, objectiveSecondHandCards);
+	                */
+	                 
 	        }
 
 	        Collections.shuffle(playerList);
@@ -157,10 +175,10 @@ public class Game {
 	    	Scanner scanner = new Scanner(System.in);
 	        //boolean continuePlaying = true;
 	        Corner choosenCorner = null;
-	        Card cardToPlay = null;
-	        Card cardToTake = null;
+	        ResourceCard cardToPlay = null;
+	        GoldCard cardToTake = null;
 
-	        System.out.println("It is the turn of the player " + currentPlayer.getName());
+	        System.out.println("T " + currentPlayer.getName());
 	        System.out.println();
 	        
 	     // Player plays a card from their hand and places it on the manuscript
@@ -230,7 +248,7 @@ public class Game {
 	     *
 	     * @return true if the answer is yes, otherwise false
 	     */
-	    public boolean inputValidation() {
+	    public boolean checkAnswer() {
 	        String choice;
 	        boolean flag;
 	        choice = sc.next();
