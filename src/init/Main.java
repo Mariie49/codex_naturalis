@@ -1,8 +1,7 @@
 package init;
 
 import cards.*;
-import cards.goldcards.*;
-
+import goldcards.*;
 import java.util.ArrayList;
 
 public class Main {
