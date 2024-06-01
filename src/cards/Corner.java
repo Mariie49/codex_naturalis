@@ -2,16 +2,13 @@ package cards;
 
 public class Corner {
 
-	private int numCorner;
+	private CornerPosition position;
 	private CornerState state;
 	private Object symbol;
 	
 	public Corner() {}
 	
-	 public Corner(int numCorner, CornerState state, Object symbol) {
-		 if (numCorner < 1 || numCorner > 4) {
-	            throw new IllegalArgumentException("Il numero del corner deve essere tra 1 e 4");
-	        }
+	 public Corner(CornerPosition position, CornerState state, Object symbol) {
 	        if (state == CornerState.SYMBOL && !(symbol instanceof Symbol)) {
 	            throw new IllegalArgumentException("Quando lo stato è 'SYMBOL', symbol deve essere un'istanza di Symbol");
 	        }
@@ -22,17 +19,18 @@ public class Corner {
 	            throw new IllegalArgumentException("Quando lo stato è 'EMPTY' o 'NULL', symbol deve essere null");
 	        }
 
-	        this.numCorner = numCorner;
+	        this.position = position;
 	        this.state = state;
 	        this.symbol = symbol;
 	     
 	    }
 
+
 		/**
-	 * @return the numCorner
+	 * @return the position
 	 */
-	public int getNumCorner() {
-		return numCorner;
+	public CornerPosition getPosition() {
+		return position;
 	}
 
 	/**
@@ -43,36 +41,22 @@ public class Corner {
 	}
 
 	/**
+	 * @param position the position to set
+	 */
+	public void setPosition(CornerPosition position) {
+		this.position = position;
+	}
+
+	/**
 	 * @return the symbol
 	 */
 	public Object getSymbol() {
 		return symbol;
 	}
 
-	/**
-	 * @param numCorner the numCorner to set
-	 */
-	public void setNumCorner(int numCorner) {
-		this.numCorner = numCorner;
-	}
-
-	/**
-	 * @param state the state to set
-	 */
-	public void setState(CornerState state) {
-		this.state = state;
-	}
-
-	/**
-	 * @param symbol the symbol to set
-	 */
-	public void setSymbol(Object symbol) {
-		this.symbol = symbol;
-	}
-
 		@Override
 	    public String toString() {
-	        return "Corner(number=" + numCorner + ", state=" + state + ", symbol=" + symbol + ")";
+	        return "Corner(position="+ position  + ", state=" + state + ", symbol=" + symbol + ")";
 	    }
 }
 
