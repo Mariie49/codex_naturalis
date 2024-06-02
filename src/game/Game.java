@@ -16,13 +16,12 @@ public class Game {
 	
 	    private ArrayList<Player> playerList;
 	    private ArrayList<ResourceCard> resourceCards;
-	    private ArrayList<ResourceCard> handPlayerResourceCards;
+	    private ArrayList<Card> handPlayerCards;
 	    private ArrayList<GoldCard> goldCards;
-	    private ArrayList<GoldCard> handPlayerGoldCards;
 	    //private ArrayList<ObjectiveCard> commonObjCard;
 	    private ArrayList <InitialCard> initCards;
-	    private ArrayList<ResourceCard> visibleResourceCards;
-	    private ArrayList<GoldCard> visibleGoldCards;
+	    private ArrayList<Card> visibleCards;
+	    
 	    //private ArrayList<Card> handPlayerCards;
 	    private PlayArea matchManuscript;
 	    private int nPlayers;
@@ -44,10 +43,10 @@ public class Game {
 	        goldCards = new ArrayList<GoldCard>();
 	        //commonObjCard = new ArrayList<ObjectiveCard>();
 	        initCards = new ArrayList<InitialCard>();
-	        visibleResourceCards = new ArrayList<ResourceCard>();
-	        visibleGoldCards = new ArrayList<GoldCard>();
-	        handPlayerResourceCards= new ArrayList <ResourceCard>();
-	        handPlayerGoldCards = new ArrayList <GoldCard>();
+	        visibleCards = new ArrayList<Card>();
+	        
+	        handPlayerCards= new ArrayList <Card>();
+	       
 	        firstEndedPoint  = 1;
 	        currentTurn = 0;
 	        maxTurns = 0;
@@ -90,42 +89,53 @@ public class Game {
 	            if (nPlayers > 0 && nPlayers < 4) {
 	                System.out.println("Vuoi aggiungiure un nuovo giocatore?");
 	                System.out.println("Si oppure no?");
-	                if (!checkAnswer()) {
+	                if (!checkAnswer() && nPlayers > 1) {
 	                    stop = true;
 	                    //System.out.println(nPlayers);
 	                }
 	            }
-	            else{
+	            else {
+	            	
 	                stop = true;
 	            }
+	            
 	            System.out.println(nPlayers);
-	        } while (nPlayers < 4 && !stop);
+	        } while ( nPlayers < 4 && !stop);
 
 	        /*
 	         * for(int i = 0; i< nPlayers; i++) {
 	        	matchManuscript = new PlayArea();//devo assegnare ogni manoscritto al proprio giocatore
 	        }
 	         */
-	     
+	        System.out.print("I giocatori sono: " + " ");
+	       
+	        for (Player s : playerList) {
+	        	System.out.print(s.getName() + " ");
+	        }
+	        System.out.println();
 	        for (int i = 0; i < 2; i++) {
 	        	// Draw two visible resource cards from the resource deck
 	            ResourceCard visibleResourceCard = ResourceCard.assignResourceCard();
-	            visibleResourceCards.add(visibleResourceCard);
-	            for (ResourceCard r : visibleResourceCards) {
-	            	r.printCard();
-	            }
+	            visibleCards.add(visibleResourceCard);
+	         
 	            
 	         // Draw two visible gold card from the gold deck
 		        GoldCard visibleGoldCard = GoldCard.assignGoldCard();
-		        visibleGoldCards.add(visibleGoldCard);
-		        for (GoldCard g : visibleGoldCards) {
-	            	g.printCard();
-	            }
+		        visibleCards.add(visibleGoldCard);
+		       
+		      
 		        
 		     // Draw two visible objective card from the objective deck
 		     //   ObjectiveCard comObjectiveCard = ObjectiveCard.drawCard();
 		     //   commonObjCard.add(comObjectiveCard);
 	        }
+	        
+	        System.out.println("Ecco le prime carte disponibili: ");
+            for (Card r : visibleCards) {
+            	System.out.println();
+            	r.printCard();
+            	System.out.println();
+            }
 
 	        
 	        
@@ -134,14 +144,15 @@ public class Game {
 	        	player.setPlayArea(matchManuscript.getPlayArea());//non sono sicura dell'effettiva correttezza di questa riga
 	            // Draw two resource cards from the resource deck
 	            for (int i = 0; i < 2; i++) {
-	                ResourceCard resourceHandCard = ResourceCard.assignResourceCard();
-	                handPlayerResourceCards = player.addResourceCardToHand(resourceHandCard);
+	                Card resourceHandCard = ResourceCard.assignResourceCard();
+	                player.addCardToHand(resourceHandCard);
 	            }
 
 	            // Draw one gold card from the gold deck
-	            GoldCard goldHandCard = GoldCard.assignGoldCard();
-	            handPlayerGoldCards = player.addGoldCardToHand(goldHandCard);
+	            Card goldHandCard = GoldCard.assignGoldCard();
+	            player.addCardToHand(goldHandCard);
 
+	            
 	            // Draw one initial card from the initial deck, choose orientation and place initial card
 	            InitialCard initialHandCard = InitialCard.assignInitialCard(); //restituisce la carta nel verso scelto 
 	            player.chooseOrientationAndPlaceInitialCard(initialHandCard); 
@@ -175,10 +186,10 @@ public class Game {
 	    	Scanner scanner = new Scanner(System.in);
 	        //boolean continuePlaying = true;
 	        Corner choosenCorner = null;
-	        ResourceCard cardToPlay = null;
-	        GoldCard cardToTake = null;
+	        Card cardToPlay = null;
+	        Card cardToTake = null;
 
-	        System.out.println("T " + currentPlayer.getName());
+	        System.out.println(" " + currentPlayer.getName());
 	        System.out.println();
 	        
 	     // Player plays a card from their hand and places it on the manuscript
@@ -194,7 +205,7 @@ public class Game {
 
 	            //switch (choice) {
 	                //case 1:
-	                	cardToPlay = currentPlayer.chooseCardToPlay(handPlayerCards);
+	                	cardToPlay = currentPlayer.chooseCardToPlay();
 	                	choosenCorner = matchManuscript.chooseCardInPlayArea(scanner); // Interazione per posizionare una carta
 	                    scanner.close();
 	                    //break;
@@ -215,20 +226,21 @@ public class Game {
     	   
     	// Player takes a card from either the resource deck or the visible resource cards or the visible gold card or the gold deck
     	   	do {
-    	   		cardToTake = currentPlayer.chooseCardToTake(visibleResourceCards, visibleGoldCards);
+    	   		cardToTake = currentPlayer.chooseCardToTake(visibleCards);
+    	   		
     	   	}while(cardToTake == null);
             
   
-            handPlayerCards = currentPlayer.addCardToHand(cardToTake);
+            currentPlayer.addCardToHand(cardToTake);
         
 
         // Update the visible cards for the next turn
-            if (visibleResourceCards.size() == 1) {
-            		updateVisibleResourceCards();
+            if (visibleCards.size() == 1) {
+            		updatevisibleCards();
             }
             
-            if (visibleGoldCards.size() == 1) {
-            		updateVisibleGoldCards();
+            if (visibleCards.size() == 1) {
+            		updatevisibleCards();
             }
 	        
 	    
@@ -271,7 +283,7 @@ public class Game {
 	    private boolean isGameOver() {
 	        // Check if any player has reached 20 points
 	        for (Player player : playerList) {
-	            if (player.getScore() >= 20 ) {
+	            if (player.getPoints() >= 20 ) {
 	                return true;
 	            }
 	        }
@@ -280,7 +292,7 @@ public class Game {
 
 	    private void calculateScores() {
 	        for (Player player : playerList) {
-	            player.calculateScore();
+	            player.totalPoints();
 	        }
 	    }
 
@@ -290,8 +302,8 @@ public class Game {
 
 	        // Find the player with the highest score
 	        for (Player player : playerList) {
-	            if (player.getScore() > maxScore) {
-	                maxScore = player.getScore();
+	            if (player.getPoints() > maxScore) {
+	                maxScore = player.getPoints();
 	                winner = player;
 	            }
 	        }
@@ -299,7 +311,7 @@ public class Game {
 	        // Check for ties
 	        ArrayList <Player> winners = new ArrayList<>();
 	        for (Player player : playerList) {
-	            if (player.getScore() == maxScore) {
+	            if (player.getPoints() == maxScore) {
 	                winners.add(player);
 	            }
 	        }
@@ -394,15 +406,12 @@ public class Game {
 	        System.out.println();
 	    }
 	    
-	    private void updateVisibleResourceCards() {
-	            ResourceCard visibleResourceCard = ResourceCard.drawCard();;
-	            visibleResourceCards.add(visibleResourceCard);
+	    private void updatevisibleCards() {
+	            Card visibleCard = ResourceCard.assignResourceCard();
+	            visibleCards.add(visibleCard);
 	        }
 	    
-	    private void updateVisibleGoldCards() {
-	            GoldCard visibleGoldCard = GoldCard.drawCard();;
-	            visibleGoldCards.add(visibleGoldCard);
-	        }
+	    
 	    
 
 	    public PlayArea getplayArea() {

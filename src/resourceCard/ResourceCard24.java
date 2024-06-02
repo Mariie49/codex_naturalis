@@ -43,7 +43,7 @@ public class ResourceCard24 extends ResourceCard{
 		this.isPlaced = isPlaced;
 	}
 	@Override
-	public Symbol getSymbol() {
+	public Symbol getKingdom() {
 		return ResourceCard24.symbol;
 	}
 	

@@ -46,7 +46,7 @@ public class ResourceCard1 extends ResourceCard {
 	}
 
 	@Override
-	public Symbol getSymbol() {
+	public Symbol getKingdom() {
 		return ResourceCard1.symbol;
 	}
 	@Override

@@ -6,6 +6,7 @@ import goldCard.*;
 import initialCard.*;
 //import ObjectiveCard;
 import resourceCard.*;
+import cards.Card;
 import cards.Symbol;
 
 
@@ -17,8 +18,10 @@ public class Player {
 	private boolean isFirst;
 	//private CommonGoalCard commonGoalCard;
 	private PlayArea personalManuscript;
-	private ArrayList <ResourceCard> handResourceCard;
-	private ArrayList <GoldCard> handGoldCard;
+	//private ArrayList <ResourceCard> handResourceCard;
+	private ArrayList <Card> hand;
+
+	//private CommonObjective commonObj;
 
 	/**
 	 * The constructor define player
@@ -31,9 +34,11 @@ public class Player {
 		this.id = id;
 		this.personalManuscript = new PlayArea();
 		this.name = name;
-		points = 0;
-		handResourceCard = new ArrayList<ResourceCard>();
-		handGoldCard = new ArrayList <GoldCard> ();
+		this.points = 0;
+		this.hand = new ArrayList <Card>();
+		//this.handResourceCard = new ArrayList<ResourceCard>();
+		//this.handGoldCard = new ArrayList <GoldCard> ();
+		//this.commonObj = CommonObjectiveCard.assignCommonObjectiveCard();
 
 	}
 
@@ -57,6 +62,7 @@ public class Player {
 	public String getName() {
 		return this.name;
 	}
+
 	/**
 	 * @param isFirst
 	 */
@@ -81,6 +87,13 @@ public class Player {
 	public void setPoints(int commonGoalPoints) {
 		this.points = commonGoalPoints;
 	}
+	/**
+	 * somma i punti inseriti ai punti che il giocatore ha
+	 * @param points punti da sommare 
+	 */
+	public void addPoints(int points) {
+		this.points += points;
+	}
 
 	public int totalPoints() {
 		int total = 0;
@@ -90,7 +103,8 @@ public class Player {
 		return total;
 	}
 
-	public ArrayList <ResourceCard> addResourceCardToHand(ResourceCard card) {
+	/*
+	 * public ArrayList <ResourceCard> addResourceCardToHand(ResourceCard card) {
 		handResourceCard.add(card);
 		return handResourceCard;
 	}
@@ -98,200 +112,208 @@ public class Player {
 		handGoldCard.add(card);
 		return handGoldCard;
 	}
+	 */
+	public void addCardToHand(Card card) {
+		hand.add(card);
 
-	ArrayList<ResourceCard> getResourceCardHand (){
-		return handResourceCard;
 	}
-	ArrayList<GoldCard> getGoldCardHand (){
-		return handGoldCard;
-	}
+
+
 	
 	
+	/*
+	 * public CommonObjectiveCard getPersonalCommonObjectiveCard() {
+		return personalGoalCard;
+	}
+
+
+	public void setPersonalGoalCard(PersonalGoalCard personalGoalCard) {
+		this.personalGoalCard = personalGoalCard;
+	}
+	 */
+
+
 	/**
 	 * Allows the player to choose a card to play from their hand.
 	 *
 	 * @param hand The player's current hand of cards (ArrayList).
 	 * @return The chosen Card object, or null if no card was selected.
 	 */
-	public Object chooseCardToPlay(ArrayList <ResourceCard> handResourceCards, ArrayList <GoldCard> handGoldCards) {
-		
-		String answer;
+	public Card chooseCardToPlay() {
+		Card c = null;
 		boolean choosen = false;
 		Scanner scanner = new Scanner (System.in);
-		for (ResourceCard card : handResourceCards) {
-			card.printCard();
-			System.out.println("Sceglieresti questa carta??");
-			answer = scanner.next();
-			while (!answer.startsWith("s") && !answer.startsWith("S") && !answer.startsWith("n") && !answer.startsWith("N")) {
-				System.out.println("La risposta non è corretta. Rispondi si oppure no.");
-				answer = scanner.next();
-			}
-			choosen = answer.startsWith("s") || answer.startsWith("S");
-			if (choosen) {
-				scanner.close();
-				handResourceCards.remove(card);
-				return card;	
-			}
-			else {
-				continue;
-			}
-		}
-		for (GoldCard card : handGoldCards) {
-			card.printCard();
-			System.out.println("Sceglieresti questa carta??");
-			answer = scanner.next();
-			while (!answer.startsWith("s") && !answer.startsWith("S") && !answer.startsWith("n") && !answer.startsWith("N")) {
-				System.out.println("La risposta non è corretta. Rispondi si oppure no.");
-				answer = scanner.next();
-			}
-			choosen = answer.startsWith("s") || answer.startsWith("S");
-			if (choosen) {
-				scanner.close();
-				handGoldCards.remove(card);
-				return card;	
-			}
-			else {
-				continue;
-			}
-		}
+		boolean stop = true; 
+		do {
+			for (Card card : this.hand) {
+				if (card instanceof ResourceCard) {
+					card.printCard();
+					System.out.println("Sceglieresti questa carta??");
+					choosen = yesorNoInput(scanner);
+					if (choosen) {
+						scanner.close();
+						this.hand.remove(card);
+						stop = false;
+						c= card;	
+					}
+					else {
+						continue;
+					}
+				}
+				else if (card instanceof GoldCard) {
+
+					card.printCard();
+					System.out.println("Sceglieresti questa carta??");
+					choosen = yesorNoInput(scanner);
+					if (choosen) {
+						scanner.close();
+						this.hand.remove(card);
+						stop = false;
+						c = card;	
+					}
+					else {
+						continue;
+					}
+
+				}
+			}}while (stop);
 		
 		scanner.close();
-		return null;	
+		return c;
+
 	}
 	/**
-	 * Allows the player to choose a card to take from the visible resource or gold cards.
+	 * Allows the player to choose a card to take from the visible cards.
 	 *
-	 * @param visibleResourceCards The list of visible resource cards available.
-	 * @param visibleGoldCards     The list of visible gold cards available.
+	 * @param visibleCards The list of visible cards available.
+	 * 
 	 * @return The chosen Card object. If the player doesn't choose any of the visible 
 	 *         cards, a new resource or gold card (depending on their choice) is drawn
 	 *         and returned. Returns null only if the player enters invalid input for
 	 *         the card type.
 	 */
-	public Object chooseCardToTake(ArrayList <ResourceCard> visibleResourceCards, ArrayList <GoldCard> visibleGoldCards) {
+	public Card chooseCardToTake(ArrayList <Card> visibleCards) {
+		Card cardTaken = null;
 		String answer;
-		boolean choosen = false;
+		boolean choosen;
+		boolean secondchoice;
 		Scanner scanner = new Scanner (System.in);
 		Scanner in = new Scanner (System.in);
 		int choice;
-		System.out.println("Che tipo di carta vorresti? Oro oppure Risorsa?");
-		String typeCard = scanner.next();
-		if(typeCard.equals("risorsa") || typeCard.equals("Risorsa") || typeCard.equals("RISORSA")) {
-			ResourceCard cardTaken;
-			System.out.println("Le carte di tipo risorsa visibili sono: ");
-			for (ResourceCard rCard : visibleResourceCards) {
-				rCard.printCard();
-				System.out.println();
+		System.out.println("Le carte visibili sono: ");
+		for(Card c: visibleCards) {
+			if (c instanceof ResourceCard) {
+				c.printCard();
 			}
-			System.out.println();
-			System.out.println("Vuoi selezionare una di queste carte? : ");
-			answer = scanner.next();
-			while (!answer.startsWith("s") && !answer.startsWith("S") && !answer.startsWith("N") && !answer.startsWith("n")) {
-				System.out.println("La risposta non è corretta. Rispondi si o no!'");
-				answer = scanner.next();
+			else if (c instanceof GoldCard) {
+				c.printCard();
 			}
-			choosen = answer.startsWith("s") || answer.startsWith("S");
-			if (choosen) {
-				scanner.close();
-				System.out.println("Quale tra queste carte vuoi? Per la prima inserire 1, per la seconda inserire 2 : ");
-				choice = in.nextInt();
-				cardTaken = visibleResourceCards.remove(choice);
-				in.close();
-				return cardTaken;	
-			}
-			else {
-				System.out.println("Pesco una nuova carta: ");
-				scanner.close();
-				in.close();
-				return ResourceCard.assignResourceCard();
-			}
-
 		}
+		System.out.println("Vuoi pescare una tra queste carte?");
+		choosen = yesorNoInput(scanner);
+		if (choosen) {
+			System.out.println("Che tipo di carta vorresti? Oro oppure Risorsa?");
+			String typeCard = scanner.next();
+			for( Card card : visibleCards ) {
+				if (typeCard.equals("risorsa") || typeCard.equals("Risorsa") || typeCard.equals("RISORSA")) {
+					if (card instanceof ResourceCard) {
+						card.printCard();
+						System.out.println("Vuoi questa carta? ");
+						secondchoice = yesorNoInput(scanner);
+						if (secondchoice) {
+							cardTaken = card;
+							break;
+						}
+						else
+							continue;
+					}
 
-		else if(typeCard.equals("gold") || typeCard.equals("Gold") || typeCard.equals("GOLD")) {
-			GoldCard cardTaken;
-			System.out.println("Le carte di tipo oro visibili sono: ");
-			for (GoldCard gCard : visibleGoldCards) {
-				gCard.printCard();
-				System.out.println();
-			}
-			System.out.println();
-			System.out.println("Vuoi selezionare una di queste carte? : ");
-			answer = scanner.next();
-			while (!answer.startsWith("s") && !answer.startsWith("S") && !answer.startsWith("N") && !answer.startsWith("n")) {
-				System.out.println("La risposta non è corretta. Rispondi si o no!'");
-				answer = scanner.next();
-			}
-			choosen = answer.startsWith("s") || answer.startsWith("S");
-			if (choosen) {
-				scanner.close();
-				System.out.println("Quale tra queste carte vuoi? Per la prima inserire 1, per la seconda inserire 2 : ");
-				choice = in.nextInt();
-				cardTaken = visibleGoldCards.remove(choice);
-				in.close();
-				return cardTaken;	
-			}
-			else {
-				System.out.println("Pesco una nuova carta: ");
-				scanner.close();
-				in.close();
-				return GoldCard.assignGoldCard();
-			}
+				}
+				else if(typeCard.equals("gold") || typeCard.equals("Gold") || typeCard.equals("GOLD")) {
+					if (card instanceof GoldCard) {
+						card.printCard();
+						System.out.println("Vuoi questa carta? ");
+						secondchoice = yesorNoInput(scanner);
+						if (secondchoice) {
+							cardTaken = card;
+							break;
+						}
+						else
+							continue;
+					}
+				}
 
+			}
 		}
+		else{
+			System.out.println("Che tipo di carta vorresti? Oro oppure Risorsa?");
+			String typeCard = scanner.next();
+			if (typeCard.equals("risorsa") || typeCard.equals("Risorsa") || typeCard.equals("RISORSA")) {
+				cardTaken = ResourceCard.assignResourceCard();
+			}
+			else if(typeCard.equals("gold") || typeCard.equals("Gold") || typeCard.equals("GOLD")) {}
+			cardTaken = GoldCard.assignGoldCard();
+		}
+		in.close();
 		scanner.close();
-		in.close();	
-		return null;
+		return cardTaken;	
 	}
 
-
-	/**
-	 * @return personal goal score 
-	 */
-	private int commonGoalPoints() {
-		//DA FARE
-		return points;
+	private boolean yesorNoInput(Scanner scanner) {
+		String answer;
+		boolean choosen;
+		answer = scanner.next();
+		while (!answer.startsWith("s") && !answer.startsWith("S") && !answer.startsWith("N") && !answer.startsWith("n")) {
+			System.out.println("La risposta non è corretta. Rispondi si o no!'");
+			answer = scanner.next();
+		}
+		choosen = answer.startsWith("s") || answer.startsWith("S");
+		return choosen;
 	}
+	
 
 
-	/**
-	 * @return an array of two positions, in the first element we have the column with the maxinum number of empty cells. In the second element we have the number of symbols
-	 */
-	//public int[] nMaxSymbols() {
-	//return personalManuscript.nMaxSimbols();
-	//}
 
 
-	/**
-	 * @return player's Manuscript
-	 */
-	public PlayArea getManuscript() { //no array
-		return personalManuscript.getPlayArea();
-	}
-	/**
-	 * @return print player's Manuscript
-	 */
-	public String printManuscript() {
-		return personalManuscript.toString();
-	}
-
-	public int getScore() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	public void calculateScore() {
-		// TODO Auto-generated method stub
-
-	}
-
-	public void chooseOrientationAndPlaceInitialCard(InitialCard initialCard) {
-		personalManuscript.placeInitialCard(initialCard); 
-	}
+/**
+ * @return personal goal score 
+ */
+private int commonGoalPoints() {
+	//DA FARE
+	return points;
+}
 
 
-	/*
-	 * public ObjectiveCard chooseObjectiveCard(ObjectiveCard firstCard,
+/**
+ * @return an array of two positions, in the first element we have the column with the maxinum number of empty cells. In the second element we have the number of symbols
+ */
+//public int[] nMaxSymbols() {
+//return personalManuscript.nMaxSimbols();
+//}
+
+
+/**
+ * @return player's Manuscript
+ */
+public PlayArea getManuscript() { //no array
+	return personalManuscript.getPlayArea();
+}
+/**
+ * @return print player's Manuscript
+ */
+public String printManuscript() {
+	return personalManuscript.toString();
+}
+
+
+
+public void chooseOrientationAndPlaceInitialCard(InitialCard initialCard) {
+	personalManuscript.placeInitialCard(initialCard); 
+}
+
+
+/*
+ * public ObjectiveCard chooseObjectiveCard(ObjectiveCard firstCard,
 			ObjectiveCard secondCard) {
 		Scanner scanner = new Scanner(System.in);
 		System.out.println("Choose one of the following cards:");
@@ -308,7 +330,7 @@ public class Player {
 		scanner.close();
 		return choice == 1 ? firstCard : secondCard;
 	}
-	 */
+ */
 
 
 

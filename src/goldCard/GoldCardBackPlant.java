@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 import cards.*;
 
-public class GoldCardBack3 extends GoldCard {
+public class GoldCardBackPlant extends GoldCard {
 
 	private boolean isPlaced = false;
 	private static int points = 0;
@@ -19,7 +19,7 @@ public class GoldCardBack3 extends GoldCard {
 	private  Corner corner4 = new Corner (CornerPosition.BOTTOM_RIGHT, CornerState.EMPTY ,null);
 	
 	
-	public GoldCardBack3() {}
+	public GoldCardBackPlant() {}
 
 	@Override
 	public ArrayList<Corner> addCorners() {

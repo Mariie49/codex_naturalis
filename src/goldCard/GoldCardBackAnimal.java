@@ -4,13 +4,13 @@ import java.util.ArrayList;
 
 import cards.*;
 
-public class GoldCardBack1 extends GoldCard {
+public class GoldCardBackAnimal extends GoldCard {
 	
 	private boolean isPlaced = false;
 	private static int points = 0;
 	private static boolean isFront = false;
-	private static int number = 41;
-	private static Symbol kingdom = Symbol.FUNGI_KINGDOM;
+	private static int number = 42;
+	private static Symbol kingdom = Symbol.ANIMAL_KINGDOM;
 	
 	// Card with 3 corners available
 	private  Corner corner1 = new Corner (CornerPosition.TOP_LEFT, CornerState.EMPTY ,null);
@@ -19,7 +19,7 @@ public class GoldCardBack1 extends GoldCard {
 	private  Corner corner4 = new Corner (CornerPosition.BOTTOM_RIGHT, CornerState.EMPTY ,null);
 	
 	
-	public GoldCardBack1() {}
+	public GoldCardBackAnimal() {}
 
 	@Override
 	public ArrayList<Corner> addCorners() {

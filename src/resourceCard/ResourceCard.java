@@ -2,7 +2,9 @@ package resourceCard;
 
 import java.util.ArrayList;
 import java.util.Random;
+import java.util.Scanner;
 
+import cards.Card;
 import cards.CardType;
 import cards.Corner;
 import cards.CornerPosition;
@@ -13,7 +15,7 @@ import cards.Symbol;
  * 
  *
  */
-public abstract class ResourceCard {
+public abstract class ResourceCard extends Card {
 	private CardType type = CardType.RESOURCE; // Tipo di carta
 	private static boolean isFront;
 	private int points;
@@ -26,13 +28,12 @@ public abstract class ResourceCard {
 	private boolean isPlaced = false; 
 	private static Symbol symbol; 
 
-
 	public ResourceCard () {}
 
 	public int getResourceCardNumber() {
 		return this.number;
 	}
-
+	@Override
 	public ArrayList <Corner> addCorners (){
 		ArrayList <Corner> corners = new ArrayList<>();
 		corners.add(corner1);
@@ -56,11 +57,12 @@ public abstract class ResourceCard {
 		int n=0;
 
 		do{
-			n=r.nextInt(43)+1;	
+			n=r.nextInt(40)+1;	
 
 		}while(assignedResourceCards.contains(n));
 
 		assignedResourceCards.add(n);
+		
 		switch(n) {
 		case 1:
 			card=new ResourceCard1();
@@ -194,7 +196,7 @@ public abstract class ResourceCard {
 		}
 		return card;
 	}
-
+	
 	public CardType getType() {
 		return type;
 	}
@@ -209,7 +211,9 @@ public abstract class ResourceCard {
 	public void setPlaced(boolean isPlaced) {
 		this.isPlaced = isPlaced;
 	}
-	public Symbol getSymbol() {
+	
+	@Override
+	public Symbol getKingdom() {
 		return this.symbol;
 	}
 
@@ -246,11 +250,12 @@ public abstract class ResourceCard {
 	 * the corner symbols and center symbols (if present) of that side, and the card's score.
 	 * If the card has no center symbols, a blank line is printed to maintain consistent card height.
 	 */
+	@Override
 	public void printCard() {
 		if(this.isFront()) {
 			System.out.println("Type: " + getType());
 			System.out.println("Score: " + getPoints());
-			System.out.println("Kingdom: " + getSymbol());
+			System.out.println("Kingdom: " + getKingdom());
 			System.out.println("Front side : \n");
 
 			System.out.print(getCornerRepresentation(CornerPosition.TOP_LEFT) + "        "+
@@ -266,19 +271,60 @@ public abstract class ResourceCard {
 
 			System.out.println("Type: " + getType());
 			System.out.println("Score: " + getPoints());
-			System.out.println("Kingdom: " + getSymbol());
+			System.out.println("Kingdom: " + getKingdom());
 			System.out.println("Back side :\n");
 
 			System.out.print(getCornerRepresentation(CornerPosition.TOP_LEFT) + "        "+
 					getCornerRepresentation(CornerPosition.TOP_RIGHT));
 			System.out.println();
-			System.out.print("    " + getSymbol() + "    ");
+			System.out.print("    " + getKingdom() + "    ");
 			System.out.println();
 			System.out.println(getCornerRepresentation(CornerPosition.BOTTOM_LEFT) + "        "+
 					getCornerRepresentation(CornerPosition.BOTTOM_RIGHT));	
 
 		}}
+	/**
+	 * This method displays a menu asking the user to select the front (1) or back (2) side.
+	 * It reads the user's input and sets the isFront property of the card accordingly.
+	 * If the user enters an invalid choice, it defaults to the front side.
+	 */
+	@Override
+	public Card ChooseSide(Card d) {
+			ResourceCard card = null;
+		    System.out.println("Do you want to choose the front or back side of the card?");
+		    System.out.println("1. Front");
+		    System.out.println("2. Back");
 
+		    Scanner scanner = new Scanner(System.in);
+		    int choice = scanner.nextInt();
+		    int val = d.getNumber();
+		    switch (choice) {
+		        case 1:
+		        	card = (ResourceCard)d;
+		            break;
+		        case 2:
+		            if (val > 0 && val < 11 ) 
+		            	card=new ResourceCardBackPlant();
+		            else if (val > 10 && val < 21 ) 
+		            	card=new ResourceCardBackFungi();
+		            else if ( val > 20 && val < 31 )
+		            	card=new ResourceCardBackAnimal();
+		            else if (val > 30 && val < 41 )
+		            	card=new ResourceCardBackInsect();
+		            break; 
+		        default:
+		            System.out.println("Invalid choice. Defaulting to front side.");
+		            card = (ResourceCard)d;
+		            break;
+		    }
+
+		    System.out.println("You have chosen the " + (isFront() ? "front" : "back") + " side of the card.");
+		    scanner.close();
+		    return card;
+		
+	}
+	
+	
 
 
 }

@@ -46,7 +46,7 @@ public class ResourceCardBackFungi extends ResourceCard {
 		this.isPlaced   = isPlaced;
 	}
 	@Override
-	public Symbol getSymbol() {
+	public Symbol getKingdom() {
 		return ResourceCardBackFungi.symbol;
 	}
 	

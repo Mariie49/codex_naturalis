@@ -2,14 +2,22 @@ package initialCard;
 
 import java.util.ArrayList;
 import java.util.Random;
+import java.util.Scanner;
 
+import cards.Card;
 import cards.CardType;
 import cards.Corner;
 import cards.CornerPosition;
 import cards.Symbol;
+import goldCard.GoldCard;
+import resourceCard.ResourceCard;
+import resourceCard.ResourceCardBackAnimal;
+import resourceCard.ResourceCardBackFungi;
+import resourceCard.ResourceCardBackInsect;
+import resourceCard.ResourceCardBackPlant;
 
 
-public abstract class InitialCard {
+public abstract class InitialCard extends Card {
 
 	private CardType type = CardType.STARTING; // Tipo di carta
 	private boolean isFront;
@@ -28,7 +36,7 @@ public abstract class InitialCard {
 	public int getInitialCardNumber() {
 		return this.number;
 	}
-
+	@Override
 	public ArrayList <Corner> addCorners (){
 		ArrayList <Corner> corners = new ArrayList<>();
 		corners.add(corner1);
@@ -40,7 +48,7 @@ public abstract class InitialCard {
 		}
 		return corners;
 	}
-
+	@Override
 	public ArrayList <Symbol> addCentralSymbol (){
 		ArrayList <Symbol> centralSymbol = new ArrayList<>();
 		centralSymbol.add(symbolA);
@@ -60,7 +68,7 @@ public abstract class InitialCard {
 		int n=0;
 
 		do{
-			n=r.nextInt(12)+1;	
+			n=r.nextInt(6)*2 + 1;
 
 		}while(assignedInitialCards.contains(n));
 
@@ -158,6 +166,7 @@ public abstract class InitialCard {
 	 * the corner symbols and center symbols (if present) of that side, and the card's score.
 	 * If the card has no center symbols, a blank line is printed to maintain consistent card height.
 	 */
+	@Override
 	public void printCard() {
 		if(this.isFront()) {
 			System.out.println("Type: " + getType());
@@ -173,8 +182,8 @@ public abstract class InitialCard {
 			}
 			else {
 				System.out.println();
-				}
-			
+			}
+
 			System.out.println(getCornerRepresentation(CornerPosition.BOTTOM_RIGHT) + "  "+
 					getCornerRepresentation(CornerPosition.BOTTOM_LEFT));	
 		}
@@ -193,13 +202,73 @@ public abstract class InitialCard {
 			}
 			else {
 				System.out.println();
-				}
+			}
 
 			System.out.println(getCornerRepresentation(CornerPosition.BOTTOM_LEFT) + "  "+
 					getCornerRepresentation(CornerPosition.BOTTOM_RIGHT));	
-		
+
 		}
 
+	}
+	/**
+	 * This method displays a menu asking the user to select the front (1) or back (2) side.
+	 * It reads the user's input and sets the isFront property of the card accordingly.
+	 * If the user enters an invalid choice, it defaults to the front side.
+	 */
+	@Override
+	public Card ChooseSide(Card d) {
+			InitialCard card = null;
+		    System.out.println("Do you want to choose the front or back side of the card?");
+		    System.out.println("1. Front");
+		    System.out.println("2. Back");
+
+		    Scanner scanner = new Scanner(System.in);
+		    int choice = scanner.nextInt();
+		    int val = d.getNumber();
+		    if (choice == 2) {
+		    	switch(val) {
+				case 1:
+					card=new InitialCard2();
+					break;
+				
+				case 3:
+					card=new InitialCard4();
+					break;
+				
+				case 5:
+					card=new InitialCard6();
+					break;
+				
+				case 7:
+					card=new InitialCard8();
+					break;
+				
+				case 9:
+					card=new InitialCard10();
+					break;
+				
+				case 11:
+					card=new InitialCard12();
+					break;
+				
+				default:
+		            System.out.println("Invalid choice. Defaulting to front side.");
+		            card = (InitialCard)d;
+		            break;
+				}
+		    }
+		    else if (choice==1) {
+		    	 card = (InitialCard)d;
+		    }
+		    else {
+		    	
+		    }
+		    	
+
+		    System.out.println("You have chosen the " + (isFront() ? "front" : "back") + " side of the card.");
+		    scanner.close();
+		    return card;
+		
 	}
 
 

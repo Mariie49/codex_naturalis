@@ -2,10 +2,16 @@ package goldCard;
 
 import java.util.ArrayList;
 import java.util.Random;
+import java.util.Scanner;
 
 import cards.*;
+import resourceCard.ResourceCard;
+import resourceCard.ResourceCardBackAnimal;
+import resourceCard.ResourceCardBackFungi;
+import resourceCard.ResourceCardBackInsect;
+import resourceCard.ResourceCardBackPlant;
 
-public abstract class GoldCard {
+public abstract class GoldCard extends Card {
 
 	private CardType type = CardType.GOLD;
 	private static boolean isFront;
@@ -131,6 +137,7 @@ public abstract class GoldCard {
 	/**
 	 * @return the kingdom
 	 */
+	@Override
 	public Symbol getKingdom() {
 		return kingdom;
 	}
@@ -163,7 +170,7 @@ public abstract class GoldCard {
 		int n = 0;
 		
 		do{
-		 n=r.nextInt(44);		 
+		 n=r.nextInt(40) + 1 ;		 
 		}while(assignedGoldCards.contains(n));
 		
 		assignedGoldCards.add(n);
@@ -289,16 +296,16 @@ public abstract class GoldCard {
 			card=new GoldCard40();
 			break;
 		case 41:
-			card=new GoldCardBack1();
+			card=new GoldCardBackFungi();
 			break;
 		case 42:
-			card=new GoldCardBack2();
+			card=new GoldCardBackAnimal();
 			break;
 		case 43:
-			card=new GoldCardBack3();
+			card=new GoldCardBackPlant();
 			break;
 		case 44:
-			card=new GoldCardBack4();
+			card=new GoldCardBackInsect();
 			break;
 		}
 		return card;
@@ -330,6 +337,7 @@ public abstract class GoldCard {
 	 * the corner symbols and center symbols (if present) of that side, and the card's score.
 	 * If the card has no center symbols, a blank line is printed to maintain consistent card height.
 	 */
+	@Override
 	public void printCard() {
 		if(this.isFront())
 			{
@@ -357,5 +365,45 @@ public abstract class GoldCard {
 				System.out.println(getCornerRepresentation(CornerPosition.BOTTOM_RIGHT) + "        "+
 					getCornerRepresentation(CornerPosition.BOTTOM_LEFT)+"\n");
 		}
+	}
+	/**
+	 * This method displays a menu asking the user to select the front (1) or back (2) side.
+	 * It reads the user's input and sets the isFront property of the card accordingly.
+	 * If the user enters an invalid choice, it defaults to the front side.
+	 */
+	@Override
+	public Card ChooseSide(Card d) {
+			GoldCard card = null;
+		    System.out.println("Do you want to choose the front or back side of the card?");
+		    System.out.println("1. Front");
+		    System.out.println("2. Back");
+
+		    Scanner scanner = new Scanner(System.in);
+		    int choice = scanner.nextInt();
+		    int val = d.getNumber();
+		    switch (choice) {
+		        case 1:
+		        	card = (GoldCard)d;
+		            break;
+		        case 2:
+		            if (val > 0 && val < 11 ) 
+		            	card = new GoldCardBackFungi();
+		            else if (val > 10 && val < 21 ) 
+		            	card = new GoldCardBackAnimal();
+		            else if ( val > 20 && val < 31 )
+		            	card = new GoldCardBackPlant();
+		            else if (val > 30 && val < 41 )
+		            	card = new GoldCardBackInsect();
+		            break; 
+		        default:
+		            System.out.println("Invalid choice. Defaulting to front side.");
+		            card = (GoldCard)d;
+		            break;
+		    }
+
+		    System.out.println("You have chosen the " + (isFront() ? "front" : "back") + " side of the card.");
+		    scanner.close();
+		    return card;
+		
 	}
 }
