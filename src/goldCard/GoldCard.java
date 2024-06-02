@@ -277,16 +277,16 @@ public abstract class GoldCard extends Card{
 			card=new GoldCard40();
 			break;
 		case 41:
-			card=new GoldCardBack1();
+			card=new GoldCardBackFungi();
 			break;
 		case 42:
-			card=new GoldCardBack2();
+			card=new GoldCardBackAnimal();
 			break;
 		case 43:
-			card=new GoldCardBack3();
+			card=new GoldCardBackPlant();
 			break;
 		case 44:
-			card=new GoldCardBack4();
+			card=new GoldCardBackInsect();
 			break;
 		}
 		return card;

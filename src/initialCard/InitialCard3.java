@@ -1,24 +1,26 @@
-package resourceCard;
+package initialCard;
 
 import java.util.ArrayList;
+
 import cards.Corner;
 import cards.CornerPosition;
 import cards.CornerState;
 import cards.Symbol;
 
-public class ResourceCard12 extends ResourceCard {
-	
+public class InitialCard3 extends InitialCard {
 	private boolean isPlaced = false;
+	private static boolean isFront = true;
 	private static int points = 0;
-	private static boolean isFront= true;
-	private static int number= 12;
+	private static boolean hasCentralSymbol = true;
+	private static int number = 3;
 	private static Symbol symbol = Symbol.FUNGI_KINGDOM;
-	private Corner corner1 = new Corner (CornerPosition.TOP_LEFT, CornerState.NULL, null);
-	private Corner corner2 = new Corner (CornerPosition.TOP_RIGHT, CornerState.SYMBOL, symbol);
+	private static Symbol differentSymbol = Symbol.ANIMAL_KINGDOM;
+	private Corner corner1 = new Corner (CornerPosition.TOP_LEFT, CornerState.SYMBOL, differentSymbol);
+	private Corner corner2 = new Corner (CornerPosition.TOP_RIGHT,CornerState.EMPTY, null);
 	private Corner corner3 = new Corner (CornerPosition.BOTTOM_RIGHT, CornerState.SYMBOL, symbol);
 	private Corner corner4 = new Corner (CornerPosition.BOTTOM_LEFT, CornerState.EMPTY, null);
 	
-	public ResourceCard12() {}
+	public InitialCard3() {}
 	
 	@Override
 	public ArrayList<Corner> addCorners() {
@@ -29,35 +31,39 @@ public class ResourceCard12 extends ResourceCard {
 		frontCorners.add(corner4);
 		return frontCorners;
 	}
+	@Override
+	public ArrayList <Symbol> addCentralSymbol (){
+		ArrayList <Symbol> centralSymbol = new ArrayList<>();
+		centralSymbol.add(symbol);
+		return centralSymbol;
+	}
 	
 	@Override
 	public int getPoints() {
-		return points;
+		return InitialCard3.points;
 	}
-	
 	@Override
 	public boolean isPlaced() {
 		return isPlaced;
 	}
-	
 	@Override
 	public void setPlaced(boolean isPlaced) {
 		this.isPlaced = isPlaced;
 	}
-	
 	@Override
-	public Symbol getSymbol() {
-		return ResourceCard12.symbol;
+	public boolean hasCentralSymbol() {
+		return InitialCard3.hasCentralSymbol;
 	}
+	
 	
 	@Override
 	public boolean isFront() {
-		return isFront;
+		return InitialCard3.isFront;
+	}
+	@Override
+	public int getInitialCardNumber() {
+		return InitialCard3.number;
 	}
 
-	@Override
-	public int getResourceCardNumber() {
-		return ResourceCard12.number;
-	}
-	
+
 }
