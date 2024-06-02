@@ -5,6 +5,7 @@ import java.util.ArrayList;
 public abstract class Card {
 	
 		private CardType type;
+		private boolean isPlaced = false;
 		private ArrayList <Object> symbols;
 		private Symbol kingdom;
 		private Corner corner;
@@ -25,6 +26,20 @@ public abstract class Card {
 		 */
 		public CardType getType() {
 			return type;
+		}
+
+		/**
+		 * @return the isPlaced
+		 */
+		public boolean isPlaced() {
+			return isPlaced;
+		}
+
+		/**
+		 * @param isPlaced the isPlaced to set
+		 */
+		public void setPlaced(boolean isPlaced) {
+			this.isPlaced = isPlaced;
 		}
 
 		/**

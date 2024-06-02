@@ -5,6 +5,7 @@ public class Corner {
 	private CornerPosition position;
 	private CornerState state;
 	private Object symbol;
+	private Card card;
 	
 	public Corner() {}
 	
@@ -22,7 +23,6 @@ public class Corner {
 	        this.position = position;
 	        this.state = state;
 	        this.symbol = symbol;
-	     
 	    }
 
 
@@ -58,5 +58,6 @@ public class Corner {
 	    public String toString() {
 	        return "Corner(position="+ position  + ", state=" + state + ", symbol=" + symbol + ")";
 	    }
+
 }
 

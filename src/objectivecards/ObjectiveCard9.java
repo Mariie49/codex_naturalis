@@ -41,7 +41,7 @@ public class ObjectiveCard9 extends ObjectiveCards {
 	                     if (grid[row][col] == null || grid[row + 1][col + 1] == null || grid[row + 2][col + 2] == null) {
 	                         return false;
 	                     }
-	                     // Verifica sei simboli dei regni corrispondono
+	                     // Verifica se i simboli dei regni corrispondono
 	                     if (!grid[row][col].getKingdom().equals(pattern[0][0]) ||
 	                         !grid[row + 1][col + 1].getKingdom().equals(pattern[1][1]) ||
 	                         !grid[row + 2][col + 2].getKingdom().equals(pattern[2][2])) {

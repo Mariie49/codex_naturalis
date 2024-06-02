@@ -60,7 +60,7 @@ public abstract class InitialCard {
 		int n=0;
 
 		do{
-			n=r.nextInt(12)+1;	
+			n=r.nextInt(6)*2 + 1;	
 
 		}while(assignedInitialCards.contains(n));
 
@@ -201,8 +201,5 @@ public abstract class InitialCard {
 		}
 
 	}
-
-
-
 
 }
