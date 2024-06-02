@@ -7,5 +7,6 @@ public enum CornerState {
 	NULL,
 	EMPTY,
 	SYMBOL,
-	SPECIALSYMBOL
+	SPECIALSYMBOL, 
+	HIDDEN
 }

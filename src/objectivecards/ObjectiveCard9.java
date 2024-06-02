@@ -2,7 +2,7 @@ package objectivecards;
 
 import cards.Card;
 import cards.Symbol;
-import game.Manuscript;
+import game.PlayArea;
 
 public class ObjectiveCard9 extends ObjectiveCards {
 
@@ -12,7 +12,7 @@ public class ObjectiveCard9 extends ObjectiveCards {
 	private Card[][] pattern;
 	
 	@Override
-	protected boolean checkTarget(Manuscript man) {
+	protected boolean checkTarget(PlayArea man) {
 		Card[][] grid = man.getGrid();
         for (int i = 0; i <= grid.length - pattern.length; i++) {
             for (int j = 0; j <= grid[0].length - pattern[0].length; j++) {

@@ -3,7 +3,7 @@ package objectivecards;
 import java.util.List;
 
 import cards.Symbol;
-import game.Manuscript;
+import game.PlayArea;
 
 public class ObjectiveCard3 extends ObjectiveCards {
 
@@ -12,7 +12,7 @@ public class ObjectiveCard3 extends ObjectiveCards {
 	private static Symbol target = Symbol.PLANT_KINGDOM;
 	
 	@Override
-	public boolean checkTarget(Manuscript man) {
+	public boolean checkTarget(PlayArea man) {
 		 List<Symbol> symbols = man.getSymbols();
 	        int count = 0;
 

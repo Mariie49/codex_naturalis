@@ -1,13 +1,13 @@
 package game;
 
 public class Player {
-    private Manuscript manuscript;
+    private PlayArea manuscript;
 
-    public Player(Manuscript manuscript) {
+    public Player(PlayArea manuscript) {
         this.manuscript = manuscript;
     }
 
-    public Manuscript getManuscript() {
+    public PlayArea getManuscript() {
         return manuscript;
     }
 }

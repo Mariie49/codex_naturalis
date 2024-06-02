@@ -2,7 +2,7 @@ package objectivecards;
 
 import java.util.List;
 import cards.SpecialSymbol;
-import game.Manuscript;
+import game.PlayArea;
 
 public class ObjectiveCard5 extends ObjectiveCards {
 
@@ -11,7 +11,7 @@ public class ObjectiveCard5 extends ObjectiveCards {
 	private static SpecialSymbol target = SpecialSymbol.QUILL;
 	
 	@Override
-	public boolean checkTarget(Manuscript man) {
+	public boolean checkTarget(PlayArea man) {
 		 List<SpecialSymbol> symbols = man.getSpecialSymbols();
 	        int count = 0;
 

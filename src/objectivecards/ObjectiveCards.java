@@ -1,7 +1,7 @@
 package objectivecards;
 
 import java.util.Random;
-import game.Manuscript;
+import game.PlayArea;
 import game.Player;
 
 public abstract class ObjectiveCards {
@@ -12,7 +12,7 @@ public abstract class ObjectiveCards {
 
 	public ObjectiveCards() {}
 
-	protected abstract boolean checkTarget(Manuscript manuscript);
+	protected abstract boolean checkTarget(PlayArea manuscript);
 
 	public static ObjectiveCards assignObjectiveCards() {
 		ObjectiveCards card = null;
