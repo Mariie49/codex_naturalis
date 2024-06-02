@@ -116,6 +116,7 @@ public abstract class GoldCard extends Card {
 	/**
 	 * @return the isPlaced
 	 */
+	@Override
 	public boolean isPlaced() {
 		return isPlaced;
 	}
@@ -152,6 +153,7 @@ public abstract class GoldCard extends Card {
 	/**
 	 * @param isPlaced the isPlaced to set
 	 */
+	@Override
 	public void setPlaced(boolean isPlaced) {
 		this.isPlaced = isPlaced;
 	}

@@ -6,6 +6,7 @@ public class Corner {
 	private CornerState state;
 	private Object symbol;
 	private boolean isCovered = false; // Flag per indicare se l'angolo è coperto
+	
 
 	public Corner() {}
 
@@ -47,7 +48,8 @@ public class Corner {
 	public Object getSymbol() {
 		return symbol;
 	}
-
+	
+	 
 	
 
 	/**

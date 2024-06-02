@@ -227,7 +227,7 @@ public class PlayArea {
 	 * @return The textual representation of the corner
 	 * */
 	private String getCornerRepresentation(Card card, CornerPosition position) {
-		for (Corner corner : card.getCorners()) {
+		for (Corner corner : card.addCorners()) {
 			if (corner.getPosition() == position && !corner.isCovered()) { // Controlla se il corner è coperto
 				switch (corner.getState()) {
 				case NULL:
@@ -235,9 +235,9 @@ public class PlayArea {
 				case EMPTY:
 					return "EMPTY";
 				case SYMBOL:
-					return corner.getSymbol().name();
+					return corner.getSymbol().toString();
 				case SPECIALSYMBOL:
-					return corner.getSpecialSymbol().name();
+					return corner.getSymbol().toString();
 				default:
 					return "?";
 				}
@@ -256,7 +256,7 @@ public class PlayArea {
 	private boolean coversMultipleCorners(Card newCard, Corner targetCorner) {
 		Card existingCard = targetCorner.getCard();
 		int coveredCorners = 0;
-		for (Corner corner : newCard.getCorners()) {
+		for (Corner corner : newCard.addCorners()) {
 			if (corner.getCard() == existingCard && corner.getState() != CornerState.NULL) { // Controlla tutti gli stati tranne NULL
 				coveredCorners++;
 				if (coveredCorners > 1) {
@@ -275,7 +275,7 @@ public class PlayArea {
      */
     private int countCoveredCards(Card newCard) {
         ArrayList<Card> coveredCards = new ArrayList<>(); // Lista per tenere traccia delle carte coperte
-        for (Corner corner : newCard.getCorners()) {
+        for (Corner corner : newCard.addCorners()) {
             if (corner.getState() != CornerState.NULL) { // Considera solo gli angoli validi
                 int cornerRow = newCard.getRow() + corner.getPosition().getRowOffset();
                 int cornerCol = newCard.getColumn() + corner.getPosition().getColOffset();
@@ -449,8 +449,8 @@ public class PlayArea {
 				}
 
 				// Controlla le adiacenze diagonali
-				for (Corner corner : card.getCorners()) {
-					for (Corner otherCorner : otherCard.getCorners()) {
+				for (Corner corner : card.addCorners()) {
+					for (Corner otherCorner : otherCard.addCorners()) {
 						CornerPosition cornerPos = corner.getPosition();
 						CornerPosition otherCornerPos = otherCorner.getPosition();
 
@@ -508,7 +508,7 @@ public class PlayArea {
 	public int countsSymbolInPlayArea(Symbol symbol) {
 		int totalCount = 0;
         for (Card card : placedCards) { // Itera su tutte le carte nella PlayArea
-        	for (Corner corner : card.getCorners()) {
+        	for (Corner corner : card.addCorners()) {
                 if (corner.getState() == CornerState.SYMBOL && corner.getSymbol() == symbol) {
                     totalCount++;
                 }
@@ -530,7 +530,7 @@ public class PlayArea {
      * @param newCard The newly placed card.
      */
 	private void updateCoveredCorners(Card newCard) {
-		for (Corner corner : newCard.getCorners()) {
+		for (Corner corner : newCard.addCorners()) {
 			if (corner.getState() != CornerState.NULL) {
 				// Ottieni la posizione del corner rispetto alla carta
 				CornerPosition cornerPos = corner.getPosition();
@@ -543,7 +543,7 @@ public class PlayArea {
 				Card coveredCard = getCardAt(cornerRow, cornerCol);
 				if (coveredCard != null && coveredCard != newCard) {
 					// Trova il corner corrispondente sulla carta coperta e impostalo come coperto
-					for (Corner c : coveredCard.getCorners()) {
+					for (Corner c : coveredCard.addCorners()) {
 						if (c.getPosition() == cornerPos.getOpposite()) { // Controlla la posizione opposta
 							c.setCovered(true);
 							break;

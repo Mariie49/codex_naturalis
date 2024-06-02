@@ -154,7 +154,8 @@ public class Game {
 
 	            
 	            // Draw one initial card from the initial deck, choose orientation and place initial card
-	            InitialCard initialHandCard = InitialCard.assignInitialCard(); //restituisce la carta nel verso scelto 
+	            InitialCard initialHandCard = InitialCard.assignInitialCard(); 
+	            										//restituisce la carta nel verso scelto 
 	            player.chooseOrientationAndPlaceInitialCard(initialHandCard); 
 	    
 	            
@@ -171,6 +172,7 @@ public class Game {
 
 	        Collections.shuffle(playerList);
 	        playerList.get(0).setIsFirst(true);
+	        
 	        
 	        
 	    }

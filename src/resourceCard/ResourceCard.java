@@ -204,10 +204,11 @@ public abstract class ResourceCard extends Card {
 	public int getPoints() {
 		return points;
 	}
-
+	@Override
 	public boolean isPlaced() {
 		return isPlaced;
 	}
+	@Override
 	public void setPlaced(boolean isPlaced) {
 		this.isPlaced = isPlaced;
 	}
