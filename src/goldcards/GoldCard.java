@@ -5,7 +5,7 @@ import java.util.Random;
 
 import cards.*;
 
-public abstract class GoldCard {
+public abstract class GoldCard extends Card{
 
 	private CardType type = CardType.GOLD;
 	private static boolean isFront;
@@ -14,23 +14,12 @@ public abstract class GoldCard {
 	private int number;
 	private Symbol kingdom;
 	private SpecialSymbol specialSymbol;
-	private Corner corner1;
-	private Corner corner2;
-	private Corner corner3;
-	private Corner corner4;
 	private static ArrayList<Integer> assignedGoldCards= new ArrayList<>();
 	
 	public GoldCard () {}
 	
 	public ArrayList<Corner> addCorners(){
 		ArrayList<Corner> corners = new ArrayList<>();
-		corners.add(corner1);
-		corners.add(corner2);
-		corners.add(corner3);
-		corners.add(corner4);
-		for(int i = 0; i <corners.size(); i++) {
-			corners.get(i).setPosition(CornerPosition.values()[i]);
-		}
 		return corners;
 	}
 	
@@ -329,6 +318,8 @@ public abstract class GoldCard {
 	 * the corner symbols and center symbols (if present) of that side, and the card's score.
 	 * If the card has no center symbols, a blank line is printed to maintain consistent card height.
 	 */
+
+	@Override
 	public void printCard() {
 		if(this.isFront())
 			{

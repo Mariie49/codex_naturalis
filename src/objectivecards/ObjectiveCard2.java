@@ -7,7 +7,6 @@ import game.Manuscript;
 
 public class ObjectiveCard2 extends ObjectiveCards {
 
-
 	private static int points = 2;
 	private static int number = 2;
 	private static Symbol target = Symbol.ANIMAL_KINGDOM;
