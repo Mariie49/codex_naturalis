@@ -4,11 +4,13 @@ import java.util.ArrayList;
 
 import cards.*;
 
+
 public class GoldCardBackAnimal extends GoldCard {
 	
 	private boolean isPlaced = false;
 	private static int points = 0;
 	private static boolean isFront = false;
+	private boolean hasCentralSymbol = true;
 	private static int number = 42;
 	private static Symbol kingdom = Symbol.ANIMAL_KINGDOM;
 	
@@ -63,6 +65,14 @@ public class GoldCardBackAnimal extends GoldCard {
 	 * @return the kingdom
 	 */
 	public Symbol getKingdom() {
+		return kingdom;
+	}
+	@Override
+	public boolean hasCentralSymbol() {
+		return hasCentralSymbol;
+	}
+	@Override
+	public Symbol getCentralSymbol() {
 		return kingdom;
 	}
 

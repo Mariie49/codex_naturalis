@@ -5,17 +5,14 @@ import java.util.Random;
 import java.util.Scanner;
 
 import cards.*;
-import resourceCard.ResourceCard;
-import resourceCard.ResourceCardBackAnimal;
-import resourceCard.ResourceCardBackFungi;
-import resourceCard.ResourceCardBackInsect;
-import resourceCard.ResourceCardBackPlant;
+
 
 public abstract class GoldCard extends Card {
 
 	private CardType type = CardType.GOLD;
 	private static boolean isFront;
 	private boolean isPlaced = false;
+	private boolean hasCentralSymbol;
 	private int points;
 	private int number;
 	private Symbol kingdom;
@@ -163,6 +160,10 @@ public abstract class GoldCard extends Card {
 	 */
 	public void setKingdom(Symbol kingdom) {
 		this.kingdom = kingdom;
+	}
+	@Override
+	public boolean hasCentralSymbol() {
+		return hasCentralSymbol;
 	}
 
 

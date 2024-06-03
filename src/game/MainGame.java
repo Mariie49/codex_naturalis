@@ -24,10 +24,10 @@ public class MainGame {
 	        } while (gameNotEnded);
 	        players = match.rankings();
 	        for (Player currentPlayer : players) {
-	            System.out.println("The player " + currentPlayer.getName() + " with a score of " + currentPlayer.totalPoints());
+	            System.out.println("Il giocatore " + currentPlayer.getName() + " ha raggiunto un punteggio di  " + currentPlayer.totalPoints());
 	        }
 	        
-	        System.out.println("The winner is " + players.get(0).getName() + " with a score of " + players.get(0).totalPoints());
+	        System.out.println("Il vincitore " + players.get(0).getName() + " con un punteggio di  " + players.get(0).totalPoints());
 
 
 	    }

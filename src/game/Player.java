@@ -17,6 +17,7 @@ public class Player {
 	private int points;
 	private boolean isFirst;
 	//private CommonGoalCard commonGoalCard;
+	//private PlayArea personalManuscript;
 	private PlayArea personalManuscript;
 	//private ArrayList <ResourceCard> handResourceCard;
 	private ArrayList <Card> hand;
@@ -32,7 +33,7 @@ public class Player {
 
 	public Player(int id, String name) {
 		this.id = id;
-		this.personalManuscript = new PlayArea();
+		this.personalManuscript = new PlayArea(20,20);
 		this.name = name;
 		this.points = 0;
 		this.hand = new ArrayList <Card>();
@@ -56,6 +57,9 @@ public class Player {
 	public void setPlayArea(PlayArea playArea) {
 		personalManuscript = playArea;
 	}
+	
+	
+	
 	/**
 	 * @return player's name
 	 */
@@ -284,33 +288,21 @@ private int commonGoalPoints() {
 }
 
 
-/**
- * @return an array of two positions, in the first element we have the column with the maxinum number of empty cells. In the second element we have the number of symbols
- */
-//public int[] nMaxSymbols() {
-//return personalManuscript.nMaxSimbols();
-//}
 
-
-/**
- * @return player's Manuscript
- */
-public PlayArea getManuscript() { //no array
-	return personalManuscript.getPlayArea();
-}
 /**
  * @return print player's Manuscript
  */
-public String printManuscript() {
+public String printPlayArea() {
 	return personalManuscript.toString();
 }
 
 
-
-public void chooseOrientationAndPlaceInitialCard(InitialCard initialCard) {
+  public void chooseOrientationAndPlaceInitialCard(InitialCard initialCard) {
+	  initialCard.ChooseSide(initialCard);
 	personalManuscript.placeInitialCard(initialCard); 
 }
 
+ 
 
 /*
  * public ObjectiveCard chooseObjectiveCard(ObjectiveCard firstCard,

@@ -3,6 +3,8 @@ import resourceCard.*;
 import cards.*;
 import goldCard.*;
 import initialCard.*;
+import objectivecards.ObjectiveCard;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -78,7 +80,7 @@ public class Game {
 	        deckInitialCard = new ArrayList <InitialCard>();
 	        //Collections.addAll(resourceCard);
 	        
-	        //establishing players
+	        
 	        do {
 
 	            System.out.println("Inserisci il nome del giocatore: " + (nPlayers + 1));
@@ -91,7 +93,7 @@ public class Game {
 	                System.out.println("Si oppure no?");
 	                if (!checkAnswer() && nPlayers > 1) {
 	                    stop = true;
-	                    //System.out.println(nPlayers);
+	                    
 	                }
 	            }
 	            else {
@@ -102,11 +104,7 @@ public class Game {
 	            System.out.println(nPlayers);
 	        } while ( nPlayers < 4 && !stop);
 
-	        /*
-	         * for(int i = 0; i< nPlayers; i++) {
-	        	matchManuscript = new PlayArea();//devo assegnare ogni manoscritto al proprio giocatore
-	        }
-	         */
+	        
 	        System.out.print("I giocatori sono: " + " ");
 	       
 	        for (Player s : playerList) {
@@ -141,21 +139,26 @@ public class Game {
 	        
 	        
 	        for (Player player : playerList) {
-	        	player.setPlayArea(matchManuscript.getPlayArea());//non sono sicura dell'effettiva correttezza di questa riga
+	        	//player.setPlayArea(matchManuscript.getMatrGrid());//non sono sicura dell'effettiva correttezza di questa riga
 	            // Draw two resource cards from the resource deck
+	        	System.out.println(" " + player.getName());
+	        	System.out.println("Pesco 2 carte risorsa e una carta oro. ");
 	            for (int i = 0; i < 2; i++) {
 	                Card resourceHandCard = ResourceCard.assignResourceCard();
+	                resourceHandCard.printCard();
 	                player.addCardToHand(resourceHandCard);
 	            }
 
 	            // Draw one gold card from the gold deck
 	            Card goldHandCard = GoldCard.assignGoldCard();
+	            goldHandCard.printCard();
 	            player.addCardToHand(goldHandCard);
 
 	            
 	            // Draw one initial card from the initial deck, choose orientation and place initial card
 	            InitialCard initialHandCard = InitialCard.assignInitialCard(); 
-	            										//restituisce la carta nel verso scelto 
+	            //restituisce la carta nel verso scelto 
+	            
 	            player.chooseOrientationAndPlaceInitialCard(initialHandCard); 
 	    
 	            
@@ -179,13 +182,13 @@ public class Game {
 
 
 	    /**
-	     * Method to manage the turn of the player with command line
+	     * Metodo per gestire il turno dei giocatori 
 	     *
 	     * @param currentPlayer
-	     * @return true if the player has placed his card on manuscript area and picked another one
+	     * @return vero se il giocatore ha piazzato la sua carta sul manoscritto e ne ha scelto un'altra
 	     */
 	    public boolean turn (Player currentPlayer) {
-	    	Scanner scanner = new Scanner(System.in);
+	    	//Scanner scanner = new Scanner(System.in);
 	        //boolean continuePlaying = true;
 	        Corner choosenCorner = null;
 	        Card cardToPlay = null;
@@ -197,7 +200,7 @@ public class Game {
 	     // Player plays a card from their hand and places it on the manuscript
 	        //while (continuePlaying) {
 	        	matchManuscript = currentPlayer.getPlayArea();
-	            matchManuscript.displayPlayArea();
+	           // matchManuscript.displayPlayArea();
 	            //System.out.println("Scegli un'azione:");
 	            //System.out.println("1. Posiziona una carta");
 	            //System.out.println("2. Termina il turno");
@@ -208,8 +211,8 @@ public class Game {
 	            //switch (choice) {
 	                //case 1:
 	                	cardToPlay = currentPlayer.chooseCardToPlay();
-	                	choosenCorner = matchManuscript.chooseCardInPlayArea(scanner); // Interazione per posizionare una carta
-	                    scanner.close();
+	                	//choosenCorner = matchManuscript.chooseCardInPlayArea(scanner); // Interazione per posizionare una carta
+	                    //scanner.close();
 	                    //break;
 	                
 	                //case 2:
@@ -222,8 +225,8 @@ public class Game {
 	           // }
 	        //}
 
-    	   matchManuscript.placeCard(cardToPlay, choosenCorner); // Chiama il metodo placeCard
-    	   matchManuscript.displayPlayArea();
+    	   //matchManuscript.placeCard(cardToPlay, choosenCorner); // Chiama il metodo placeCard
+    	   //matchManuscript.displayPlayArea();
     	   
     	   
     	// Player takes a card from either the resource deck or the visible resource cards or the visible gold card or the gold deck
@@ -257,10 +260,9 @@ public class Game {
 	    }
 
 	    /**
-	     * Does the basic work to have a valid input from the user . The valid
-	     * inputs are: 'Y', 'Yes', 'yes', 'N', 'No', or 'no'
+	     * Verifica se l'utente risponde si oppure no. Le valide risposte sono : 'Y', 'Yes', 'yes', 'N', 'No', or 'no'
 	     *
-	     * @return true if the answer is yes, otherwise false
+	     * @return true is the answer is yes
 	     */
 	    public boolean checkAnswer() {
 	        String choice;
@@ -330,53 +332,9 @@ public class Game {
 	    }
 	    
 
-	    public void coordinateInput(ArrayList<Integer> area, int index, int maxIndex) {
-	        Integer num = 0;
-	        boolean inputFlag = false;
-	        do {
-	            num = integerInput(0, maxIndex);
-	            if (index > 0) {
-	                if (!area.get(index - 1).equals(num) && !area.get(index - 1).equals(num - 1)) {
-	                    System.out.println("The number must be equal or greater than the previous number");
-	                    inputFlag = true;
-	                } else {
-	                    inputFlag = false;
-	                    area.add(num);
-	                }
-	            } else {
-	                inputFlag = false;
-	                area.add(num);
-	            }
-	        } while (inputFlag);
+	    
 
-	    }
-
-	    /**
-	     * Manages the input of an integer
-	     *
-	     * @param min minimum of the number in input from the user, included.
-	     * @param max maximum of the number in input from the user, excluded.
-	     * @return
-	     */ //non PENSO MI SERVA 
-	    public Integer integerInput(int min, int max) {
-	        Integer num = 0;
-	        boolean inputFlag = false;
-	        //new interaction every time the number is too great, too small or wrong format.
-
-	        do {
-
-	            try {
-	                System.out.println("Please insert a number between " + min + ", included and " + max + " excluded");
-	                num = sc.nextInt();
-	                sc.nextLine();
-
-	            } catch (InputMismatchException e) {
-	                System.out.println("Error, the number has to be an integer");
-
-	            }
-	        } while (num < min || num >= max);
-	        return num;
-	    }
+	   
 
 	   
 	    public ArrayList<Player> rankings(){
@@ -393,15 +351,15 @@ public class Game {
 	    /**
 	     * Fast way to print an ArrayList of Cards with an index on top of the row
 	     *
-	     * @param genericCards
+	     * @param cards
 	     */
 	    public void printCardArrayList(ArrayList<Card> genericCards) {
-	        //print of the index for every element present in the ArrayList
+	       
 	        for (int i = 0; i < genericCards.size(); i++) {
 	            System.out.print(i + "\t");
 	        }
 	        System.out.println();
-	        //print of the elements contained in the ArrayList
+	        
 	        for (int i = 0; i < genericCards.size(); i++) {
 	            System.out.print(genericCards.get(i) + "\t");
 	        }

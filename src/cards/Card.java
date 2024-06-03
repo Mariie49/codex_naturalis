@@ -6,6 +6,7 @@ public abstract class Card {
 	private Symbol kingdom;
 	private Corner corner;
 	private boolean isPlaced = false;
+	private boolean hasCentralSymbol;
 	private int number;
 	private int row;
     private int column;
@@ -195,11 +196,18 @@ public abstract class Card {
 		public void setColumn(int column) {
 			this.column = column;
 		}
-
+		
+		public Symbol getCentralSymbol() {
+			return kingdom;
+		}
 	
 	public ArrayList <Corner> addCorners (){
 		ArrayList <Corner> corners = new ArrayList<>();
 		return corners;
+	}
+	
+	public boolean hasCentralSymbol() {
+		return hasCentralSymbol;
 	}
 	
 	public ArrayList <Symbol> addCentralSymbol (){

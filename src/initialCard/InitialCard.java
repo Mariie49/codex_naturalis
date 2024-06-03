@@ -9,12 +9,7 @@ import cards.CardType;
 import cards.Corner;
 import cards.CornerPosition;
 import cards.Symbol;
-import goldCard.GoldCard;
-import resourceCard.ResourceCard;
-import resourceCard.ResourceCardBackAnimal;
-import resourceCard.ResourceCardBackFungi;
-import resourceCard.ResourceCardBackInsect;
-import resourceCard.ResourceCardBackPlant;
+
 
 
 public abstract class InitialCard extends Card {
@@ -134,9 +129,11 @@ public abstract class InitialCard extends Card {
 	public boolean isFront() {
 		return isFront;
 	}
+	@Override
 	public boolean hasCentralSymbol() {
 		return hasCentralSymbol;
 	}
+	@Override
 	public Symbol getCentralSymbol() {
 		return symbolA;
 	}
@@ -164,8 +161,8 @@ public abstract class InitialCard extends Card {
 	 * Prints the details of the card.
 	 * 
 	 * This method displays the card's type, the side (front or back),
-	 * the corner symbols and center symbols (if present) of that side, and the card's score.
-	 * If the card has no center symbols, a blank line is printed to maintain consistent card height.
+	 * the corner symbols and Central symbols (if present) of that side, and the card's score.
+	 * If the card has no Central symbols, a blank line is printed to maintain consistent card height.
 	 */
 	@Override
 	public void printCard() {
@@ -223,8 +220,9 @@ public abstract class InitialCard extends Card {
 		    System.out.println("1. Front");
 		    System.out.println("2. Back");
 
-		    Scanner scanner = new Scanner(System.in);
-		    int choice = scanner.nextInt();
+		    Scanner in = new Scanner(System.in);
+		    int choice = in.nextInt();
+		    in.close();
 		    int val = d.getNumber();
 		    if (choice == 2) {
 		    	switch(val) {
@@ -253,7 +251,7 @@ public abstract class InitialCard extends Card {
 					break;
 				
 				default:
-		            System.out.println("Invalid choice. Defaulting to front side.");
+		            System.out.println("Scelta non valida. Prendo il fronte.");
 		            card = (InitialCard)d;
 		            break;
 				}
@@ -267,7 +265,6 @@ public abstract class InitialCard extends Card {
 		    	
 
 		    System.out.println("You have chosen the " + (isFront() ? "front" : "back") + " side of the card.");
-		    scanner.close();
 		    return card;
 		
 	}

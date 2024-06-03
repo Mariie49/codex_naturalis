@@ -18,6 +18,7 @@ import cards.Symbol;
 public abstract class ResourceCard extends Card {
 	private CardType type = CardType.RESOURCE; // Tipo di carta
 	private static boolean isFront;
+	private boolean hasCentralSymbol;
 	private int points;
 	private int number;
 	private Corner corner1;
@@ -221,6 +222,11 @@ public abstract class ResourceCard extends Card {
 	public boolean isFront() {
 		return isFront;
 	}
+	@Override
+	public boolean hasCentralSymbol() {
+		return hasCentralSymbol;
+	}
+	@Override
 	public Symbol getCentralSymbol() {
 		return symbol;
 	}
@@ -248,8 +254,8 @@ public abstract class ResourceCard extends Card {
 	 * Prints the details of the card.
 	 * 
 	 * This method displays the card's type, the side (front or back),
-	 * the corner symbols and center symbols (if present) of that side, and the card's score.
-	 * If the card has no center symbols, a blank line is printed to maintain consistent card height.
+	 * the corner symbols and Central symbols (if present) of that side, and the card's score.
+	 * If the card has no Central symbols, a blank line is printed to maintain consistent card height.
 	 */
 	@Override
 	public void printCard() {

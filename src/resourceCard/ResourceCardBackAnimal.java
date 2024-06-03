@@ -13,7 +13,7 @@ public class ResourceCardBackAnimal extends ResourceCard {
 	private static boolean isFront= false;
 	private static int number= 43;
 	private static Symbol symbol = Symbol.PLANT_KINGDOM;
-	private boolean hasCenterSymbol = true;
+	private boolean hasCentralSymbol = true;
 	//private ArrayList <Corner> corners = new ArrayList <Corner>;
 	private Corner corner2 = new Corner (CornerPosition.TOP_RIGHT, CornerState.EMPTY, null);
 	private Corner corner3 = new Corner (CornerPosition.BOTTOM_RIGHT, CornerState.EMPTY, null );
@@ -59,8 +59,9 @@ public class ResourceCardBackAnimal extends ResourceCard {
 	public int getResourceCardNumber() {
 		return ResourceCardBackAnimal.number;
 	}
-	public boolean hasCenterSymbol() {
-		return hasCenterSymbol;
+	@Override
+	public boolean hasCentralSymbol() {
+		return hasCentralSymbol;
 	}
 	@Override
 	public Symbol getCentralSymbol() {
