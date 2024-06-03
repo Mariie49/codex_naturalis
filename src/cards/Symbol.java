@@ -24,4 +24,22 @@ public enum Symbol {
         return Symbols[i];
     }
 	
+	
+		 public String getAbbreviation() {
+		        switch (this) {
+		            case PLANT_KINGDOM:
+		                return "P_K";
+		            case ANIMAL_KINGDOM:
+		                return "A_K";
+		            case FUNGI_KINGDOM:
+		                return "F_K";
+		            case INSECT_KINGDOM:
+		                return "I_K";   
+		            default:
+		                return name().charAt(0) + "_K"; 
+		        }
+		    } 
+	
+
+	
 }

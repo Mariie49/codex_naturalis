@@ -138,54 +138,63 @@ public class Player {
 
 
 	/**
-	 * Allows the player to choose a card to play from their hand.
+	 * Permette al giocatore di scegliere una carta da giocare dalla propria mano.
 	 *
-	 * @param hand The player's current hand of cards (ArrayList).
-	 * @return The chosen Card object, or null if no card was selected.
+	 * @param mano La mano di carte corrente del giocatore (ArrayList).
+	 * @return L'oggetto Carta scelto, o null se non è stata selezionata alcuna carta.
 	 */
 	public Card chooseCardToPlay() {
-		Card c = null;
-		boolean choosen = false;
-		Scanner scanner = new Scanner (System.in);
-		boolean stop = true; 
-		do {
-			for (Card card : this.hand) {
-				if (card instanceof ResourceCard) {
-					card.printCard();
-					System.out.println("Sceglieresti questa carta??");
-					choosen = yesorNoInput(scanner);
-					if (choosen) {
-						scanner.close();
-						this.hand.remove(card);
-						stop = false;
-						c= card;	
-					}
-					else {
-						continue;
-					}
-				}
-				else if (card instanceof GoldCard) {
+	    Scanner scanner = new Scanner(System.in);
+	    int choice;
+	    boolean isVerified = false;
+	    
+	    do {
+	        do {
+	            System.out.println("La tua mano:");
+	            for (int i = 0; i < this.hand.size(); i++) {
+	                Card card = this.hand.get(i);  
+	                System.out.println((i + 1) + ": ");
+	                card.printCard();
+	                System.out.println();
+	            }
+	            System.out.print("Scegli una carta (0 per annullare): ");
 
-					card.printCard();
-					System.out.println("Sceglieresti questa carta??");
-					choosen = yesorNoInput(scanner);
-					if (choosen) {
-						scanner.close();
-						this.hand.remove(card);
-						stop = false;
-						c = card;	
-					}
-					else {
-						continue;
-					}
+	            while (!scanner.hasNextInt()) {
+	                System.out.println("Inserisci un numero valido.");
+	                scanner.next();
+	            }
+	            choice = scanner.nextInt();
+	        } while (choice < 0 || choice > this.hand.size()); 
 
-				}
-			}}while (stop);
-		
-		scanner.close();
-		return c;
+	        if (choice == 0) {
+	            isVerified = false; 
+	        }
 
+	        Card choosenCard = this.hand.get(choice - 1);
+	        System.out.println("Hai scelto: " + choosenCard);
+	        System.out.print("Confermi la scelta? (1 per sì, 0 per no): ");
+
+	        while (!scanner.hasNextInt()) {
+	            System.out.println("Inserisci 1 per sì o 0 per no.");
+	            scanner.next();
+	        }
+	        int validation = scanner.nextInt();
+	        isVerified = (validation == 1);
+	    } while (!isVerified);
+
+	    scanner.close();
+
+	    return this.hand.remove(choice - 1); 
 	}
+
+
+	
+
+	
+	
+	
+	
+	
 	/**
 	 * Allows the player to choose a card to take from the visible cards.
 	 *
@@ -253,10 +262,10 @@ public class Player {
 			System.out.println("Che tipo di carta vorresti? Oro oppure Risorsa?");
 			String typeCard = scanner.next();
 			if (typeCard.equals("risorsa") || typeCard.equals("Risorsa") || typeCard.equals("RISORSA")) {
-				cardTaken = ResourceCard.assignResourceCard();
+				cardTaken = ResourceCard.drawResourceCard();
 			}
 			else if(typeCard.equals("gold") || typeCard.equals("Gold") || typeCard.equals("GOLD")) {}
-			cardTaken = GoldCard.assignGoldCard();
+			cardTaken = GoldCard.drawGoldCard();
 		}
 		in.close();
 		scanner.close();

@@ -49,9 +49,11 @@ public class Cell {
 	 */
 	public boolean isEmpty()
 	{
-		if(!this.isNotOccupied()) {
+		/*
+		 * if(!this.isNotOccupied()) {
 			System.out.println("La cella non è occupabile");
 		}
+		 */
 		if(this.Card == null){
 			return true;
 		}
@@ -71,9 +73,7 @@ public class Cell {
 	 * @param Card carta da inserire all'interno della Cella.
 	 */
 	public void setCard(Card Card) {
-		if(!this.isNotOccupied()) {
-			System.out.println("La cella non è occupabile");
-		}
+		
 		this.Card = Card;
 	}
 	
@@ -81,9 +81,11 @@ public class Cell {
 	 * Se la cella è occupata restituisce la carta in essa contenuta.
 	 */
 	public Card getCard() {
-		if(!this.isNotOccupied()) {
+		/*
+		 * if(!this.isNotOccupied()) {
 			System.out.println("La cella non è occupabile");
 		}
+		 */
 		if(this.isEmpty()) {
 			throw new NullPointerException("Non c'è nessuna carta nella cella");
 		}

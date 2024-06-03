@@ -8,6 +8,7 @@ import cards.Card;
 import cards.CardType;
 import cards.Corner;
 import cards.CornerPosition;
+import cards.SpecialSymbol;
 import cards.Symbol;
 
 
@@ -57,7 +58,7 @@ public abstract class InitialCard extends Card {
 	 * metodo per assegnare una carta  casuale
 	 * @return carta iniziale
 	 */
-	public static InitialCard assignInitialCard() {
+	public static InitialCard drawInitialCard() {
 		InitialCard card = null;
 		Random r = new Random();
 		int n=0;
@@ -137,6 +138,74 @@ public abstract class InitialCard extends Card {
 	public Symbol getCentralSymbol() {
 		return symbolA;
 	}
+	public String getAbbreviatedCorner(CornerPosition position) {
+	    for (Corner corner : addCorners()) {
+	        if (corner.getPosition().equals(position)) {
+	            switch (corner.getState()) {
+	                case NULL:
+	                    return "NUL";
+	                case EMPTY:
+	                    return "EMP";
+	                case HIDDEN:
+	                    return "HID";
+	                case SYMBOL:
+	                	if (corner.getSymbol() instanceof Symbol) {
+	                        Symbol symbol = (Symbol) corner.getSymbol();
+	                        return symbol.getAbbreviation();
+	                	} else {
+	                        
+	                        return corner.getSymbol().toString();
+	                    }
+	                case SPECIALSYMBOL:
+	                	if (corner.getSymbol() instanceof SpecialSymbol) {
+	                        SpecialSymbol symbol = (SpecialSymbol) corner.getSymbol();
+	                        return symbol.getAbbreviation();
+	                	} else {
+	                        
+	                        return corner.getSymbol().toString();
+	                    }
+	                default:
+	                    return "?";
+	            }
+	        }
+	    }
+	    return "  "; // Angolo non trovato (non dovrebbe accadere)
+	}
+	@Override
+	public void printCardInCell() {
+		if(this.isFront()) {
+	
+			System.out.print(getAbbreviatedCorner(CornerPosition.TOP_LEFT) + "  "+
+					getAbbreviatedCorner(CornerPosition.TOP_RIGHT));
+			System.out.println();
+			if(this.hasCentralSymbol()) {
+				for(Symbol s: addCentralSymbol())
+					System.out.println("  " + s.getAbbreviation() + "   ");
+			}
+			else {
+				System.out.println();
+			}
+
+			System.out.println(getAbbreviatedCorner(CornerPosition.BOTTOM_RIGHT) + "  "+
+					getAbbreviatedCorner(CornerPosition.BOTTOM_LEFT));	
+		}
+		else {
+			System.out.print(getAbbreviatedCorner(CornerPosition.TOP_LEFT) + "  "+
+					getAbbreviatedCorner(CornerPosition.TOP_RIGHT));
+			System.out.println();
+			if(this.hasCentralSymbol()) {
+				for(Symbol s: addCentralSymbol())
+					System.out.print("  " + s.getAbbreviation() + "   ");
+			}
+			else {
+				System.out.println();
+			}
+
+			System.out.println(getAbbreviatedCorner(CornerPosition.BOTTOM_LEFT) + "  "+
+					getAbbreviatedCorner(CornerPosition.BOTTOM_RIGHT));	
+
+		}
+	}
 
 	public String getCornerRepresentation(CornerPosition position) {
 		for (Corner corner : addCorners()) {
@@ -150,6 +219,28 @@ public abstract class InitialCard extends Card {
 					return corner.getSymbol().toString();
 				case SPECIALSYMBOL:
 					return corner.getSymbol().toString();
+				default:
+					return "?";
+				}
+			}
+		}
+		return "  "; // Angolo non trovato (non dovrebbe accadere)
+	}
+	
+	public String getCornerRepresentationP(CornerPosition position) {
+		for (Corner corner : addCorners()) {
+			if (corner.getPosition().equals(position)) {
+				switch (corner.getState()) {
+				case NULL:
+					return "NULl";
+				case EMPTY:
+					return "EMPTY";
+				case SYMBOL:
+					return corner.getSymbol().toString();
+				case SPECIALSYMBOL:
+					return corner.getSymbol().toString();
+				case HIDDEN:
+					return "HIDDEN";
 				default:
 					return "?";
 				}
@@ -203,7 +294,7 @@ public abstract class InitialCard extends Card {
 			}
 
 			System.out.println(getCornerRepresentation(CornerPosition.BOTTOM_LEFT) + "  "+
-					getCornerRepresentation(CornerPosition.BOTTOM_RIGHT));	
+					getAbbreviatedCorner(CornerPosition.BOTTOM_RIGHT));	
 
 		}
 

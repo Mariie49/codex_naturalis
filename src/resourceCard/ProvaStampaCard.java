@@ -12,16 +12,17 @@ public class ProvaStampaCard {
 	public static void main(String[] args) {
 		//ArrayList<ResourceCard> card= new ArrayList<ResourceCard>();
 		Card card = new ResourceCard23();
-		ResourceCardBackPlant cardiB  =  new ResourceCardBackPlant();
-		InitialCard3 cardI = new InitialCard3 ();
+		//ResourceCardBackPlant cardiB  =  new ResourceCardBackPlant();
+		//InitialCard3 cardI = new InitialCard3 ();
 		InitialCard4 cardIB = new InitialCard4 ();
-		 cardI.printCard();
+		 //cardI.printCard();
 		 for(Corner c : card.addCorners()) {
 			 c.toString();
 		 }
 		 System.out.println(card.addCorners());
 		 System.out.println();
-		 cardIB.printCard();
+		 //cardIB.printCard();
+		 card.printCardInCell();
 		 
 		
 		 /*

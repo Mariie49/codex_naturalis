@@ -19,4 +19,16 @@ public enum SpecialSymbol {
         int index = random.nextInt(specialSymbols.length);
         return specialSymbols[index];
     }
+	 public String getAbbreviation() {
+	        switch (this) {
+	            case INKWELL:
+	                return "I_O";
+	            case MANUSCRIPT:
+	                return "M_O";
+	            case QUILL:
+	                return "Q_O";
+	            default:
+	                return name().charAt(0) + "_O"; 
+	        }
+	    }
 }

@@ -4,6 +4,9 @@ import java.util.ArrayList;
 
 import cards.Card;
 import cards.CardType;
+import cards.Corner;
+import cards.CornerPosition;
+import cards.CornerState;
 import initialCard.InitialCard;
 
 public class PlayArea {
@@ -54,21 +57,171 @@ public class PlayArea {
 		if (initialCard.getType() != CardType.STARTING) { //penso che non serva
 			throw new IllegalArgumentException("The initial card must be of the STARTING type.");
 		}
-		 // Calcola le coordinate del centro della griglia
-	    int centerX = this.rows / 2;
-	    int centerY = this.columns / 2;
+		// Calcola le coordinate del centro della griglia
+		int centerX = this.rows / 2;
+		int centerY = this.columns / 2;
+		System.out.println("La carta iniziale è posizionata in: x = " + centerX);
+		System.out.println("La carta iniziale è posizionata in: y = " + centerY);
+		Cell centerCell = matrix[centerX][centerY];
+		
 
-	    
-	    Cell centerCell = matrix[centerX][centerY];
-	  
-
-	    // Inserisci la carta al centro
-	    centerCell.setCard(initialCard);
-	    centerCell.setState(State.NON_OCCUPABILE);
+		// Inserisci la carta al centro
+		centerCell.setCard(initialCard);
+		centerCell.setState(State.NON_OCCUPABILE);
 		initialCard.setPlaced(true);
 		placedCards.add(initialCard);
 
 	}
+
+	/**
+	 * Posiziona una carta nel manoscritto in diagonale.
+	 *
+	 * @param card    La carta da posizionare
+	 * @param x       La coordinata x 
+	 * @param y       La coordinata y 
+	 * @throws IllegalArgumentException Se la posizione non è valida, la cella non è occupabile,
+	 *                                  o la carta non rispetta la regola di adiacenza diagonale.
+	 */
+	public void placeCardInManuscript(Card card, int x, int y) {
+		// 1. Validazione delle coordinate
+		if (x < 0 || x >= this.rows || y < 0 || y >= this.columns) {
+			throw new IllegalArgumentException("Posizione non valida nella griglia.");
+		}
+
+		Cell cell = matrix[x][y];
+
+		// 2. Verifica se la cella è occupabile
+		if (!cell.isNotOccupied()) {
+			throw new IllegalArgumentException("La cella selezionata non è occupabile.");
+		}
+
+
+		// 4. Verifica adiacenza diagonale (regola principale)
+		if (!hasDiagonalAdjacentCard(x, y)) {
+			throw new IllegalArgumentException("La carta deve essere adiacente in diagonale ad un'altra carta.");
+		}
+
+
+		// 5. Posiziona la carta
+		cell.setCard(card);
+		cell.setState(State.NON_OCCUPABILE);
+		card.setPlaced(true);
+		// 5. Aggiorna gli stati dei corner
+	    updateCornerStates(x, y);
+		placedCards.add(card);
+		 
+	}
+	
+	/**
+     * Restituisce la lista di celle adiacenti in diagonale e occupabili rispetto alle carte già posizionate.
+     *
+     * @return Una lista di oggetti Cell che rappresentano le celle disponibili.
+     */
+    public ArrayList<Cell> getAvailableDiagonalCells() {
+        ArrayList<Cell> availableCells = new ArrayList<>();
+        for (int x = 0; x < rows; x++) {
+            for (int y = 0; y < columns; y++) {
+                if (matrix[x][y].isNotOccupied() && x > 0 && x < rows - 1 && y > 0 && y < columns - 1 &&hasDiagonalAdjacentCard(x, y)) {
+                    availableCells.add(matrix[x][y]);
+                }
+            }
+        }
+        return availableCells;
+    }
+
+
+
+	/**
+	 * Controlla se una cella ha carte adiacenti in diagonale.
+	 *
+	 * @param x La coordinata x della cella 
+	 * @param y La coordinata y della cella 
+	 * @return true se la cella ha almeno una carta adiacente in diagonale, false altrimenti.
+	 */
+    private boolean hasDiagonalAdjacentCard(int x, int y) {
+        Cell cellTopLeft = null;
+        Cell cellTopRight = null;
+        Cell cellBottomLeft = null;
+        Cell cellBottomRight = null;
+
+        if (x > 0 && y > 0) {
+            cellTopLeft = matrix[x - 1][y - 1];
+            if (!cellTopLeft.isEmpty()) {
+                return true;
+            }
+        }
+
+        if (x > 0 && y < columns - 1) {
+            cellTopRight = matrix[x - 1][y + 1];
+            if (!cellTopRight.isEmpty()) {
+                return true;
+            }
+        }
+
+        if (x < rows - 1 && y > 0) {
+            cellBottomLeft = matrix[x + 1][y - 1];
+            if (!cellBottomLeft.isEmpty()) {
+                return true;
+            }
+        }
+
+        if (x < rows - 1 && y < columns - 1) {
+            cellBottomRight = matrix[x + 1][y + 1];
+            if (!cellBottomRight.isEmpty()) {
+                return true;
+            }
+        }
+
+        return false; 
+    }
+	/**
+     * Aggiorna gli stati dei corner delle carte adiacenti in diagonale alla carta appena posizionata.
+     * I corner che sono coperti dalla nuova carta vengono impostati allo stato HIDDEN.
+     *
+     * @param x La coordinata x della carta appena posizionata.
+     * @param y La coordinata y della carta appena posizionata.
+     */
+	public void updateCornerStates(int x, int y) {
+	    for (int dx = -1; dx <= 1; dx += 2) {
+	        for (int dy = -1; dy <= 1; dy += 2) {
+	            int diagX = x + dx;
+	            int diagY = y + dy;
+
+	            // Verifica se le coordinate sono valide e la cella contiene una carta
+	            if (diagX >= 0 && diagX < rows &&
+	                diagY >= 0 && diagY < columns &&
+	                !matrix[diagX][diagY].isEmpty()) {
+	                
+	                Card inDiagCard = matrix[diagX][diagY].getCard();
+	                CornerPosition coveredCorner = getCoveredCorner(dx, dy);
+
+	                // Imposta lo stato del corner a HIDDEN
+	                for (Corner corner : inDiagCard.addCorners()) {
+	                    if (corner.getPosition() == coveredCorner) {
+	                        corner.setState(CornerState.HIDDEN);
+	                        corner.setCovered(true);
+	                        break; 
+	                    }
+	                }
+	            }
+	        }
+	    }
+	}
+	/**
+     * Determina quale corner di una carta adiacente viene coperto in base alla posizione relativa
+     * rispetto alla carta appena posizionata.
+     *
+     * @param dx La differenza in x tra le due carte (-1 per sinistra, +1 per destra).
+     * @param dy La differenza in y tra le due carte (-1 per sopra, +1 per sotto).
+     * @return La posizione del corner coperto (TOP_LEFT, TOP_RIGHT, BOTTOM_LEFT, BOTTOM_RIGHT).
+     */
+    private CornerPosition getCoveredCorner(int dx, int dy) {
+        if (dx == -1 && dy == -1) return CornerPosition.BOTTOM_RIGHT;
+        if (dx == -1 && dy == 1) return CornerPosition.TOP_RIGHT;
+        if (dx == 1 && dy == -1) return CornerPosition.BOTTOM_LEFT;
+        return CornerPosition.TOP_LEFT; // dx == 1 && dy == 1
+    }
+
 	/**
 	 * Restituisce il numero delle righe della Griglia
 	 */
@@ -169,13 +322,7 @@ public class PlayArea {
 		return count;
 	}
 
-
-
-
-
-
-
-
+	 
 
 	/**
 	 * Controlla se la carta specificata ha carte adiacenti in diagonale.
@@ -327,7 +474,7 @@ public class PlayArea {
 	}
 
 	/**
-	 * Verifica se due carte sono posizionate vericalmente l'una rispetto all'altra
+	 * Verifica se due carte sono posizionate verticalmente l'una rispetto all'altra
 	 * @param card1
 	 * @param card2
 	 * @return true se sono allineate verticalmente
@@ -343,4 +490,49 @@ public class PlayArea {
 
 		return cell1.getY() == cell2.getY();
 	}
+	public void printManuscript() {
+	    // Larghezza fissa considerando 3 simboli centrali
+	    int maxCardWidth = 21; 
+
+	    // Intestazione con indici di colonna
+	    System.out.print("   ");
+	    for (int y = 0; y < columns; y++) {
+	        System.out.printf("%-" + (maxCardWidth + 2) + "d", y);
+	    }
+	    System.out.println();
+
+	    // Stampa delle righe con indici di riga
+	    for (int x = 0; x < rows; x++) {
+	        System.out.printf("%-2d", x); // Indice di riga
+
+	        // Stampa separatore orizzontale superiore
+	        System.out.print(" ");
+	        for (int y = 0; y < columns; y++) {
+	            System.out.print(" ".repeat(maxCardWidth + 1) + " ");
+	        }
+	        System.out.println(); // A capo
+
+	        // Stampa contenuto delle celle
+	        for (int y = 0; y < columns; y++) {
+	            Cell cell = matrix[x][y];
+	            System.out.print(" "); // Separatore verticale
+	            if (cell.isEmpty()) {
+	                System.out.print(" ".repeat(maxCardWidth)); 
+	            } else {
+	                cell.getCard().printCardInCell();
+	                int padding = maxCardWidth - 21;
+	                System.out.print(" ".repeat(padding));
+	            }
+	        }
+	        System.out.println(" "); // Separatore verticale finale e a capo
+	    }
+
+	    // Stampa separatore orizzontale inferiore
+	    System.out.print(" ");
+	    for (int y = 0; y < columns; y++) {
+	        System.out.print(" ".repeat(maxCardWidth + 1) + " ");
+	    }
+	    System.out.println(); // A capo finale
+	}
+
 }

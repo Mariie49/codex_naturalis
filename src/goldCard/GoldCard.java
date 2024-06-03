@@ -167,7 +167,7 @@ public abstract class GoldCard extends Card {
 	}
 
 
-	public static GoldCard assignGoldCard() {
+	public static GoldCard drawGoldCard() {
 		GoldCard card = null;
 		Random r = new Random();
 		int n = 0;
@@ -314,6 +314,60 @@ public abstract class GoldCard extends Card {
 		return card;
 	}
 	
+	public String getAbbreviatedCorner(CornerPosition position) {
+	    for (Corner corner : addCorners()) {
+	        if (corner.getPosition().equals(position)) {
+	            switch (corner.getState()) {
+	                case NULL:
+	                    return "NUL";
+	                case EMPTY:
+	                    return "EMP";
+	                case HIDDEN:
+	                    return "HID";
+	                case SYMBOL:
+	                	if (corner.getSymbol() instanceof Symbol) {
+	                        Symbol symbol = (Symbol) corner.getSymbol();
+	                        return symbol.getAbbreviation();
+	                	} else {
+	                        
+	                        return corner.getSymbol().toString();
+	                    }
+	                case SPECIALSYMBOL:
+	                	if (corner.getSymbol() instanceof SpecialSymbol) {
+	                        SpecialSymbol symbol = (SpecialSymbol) corner.getSymbol();
+	                        return symbol.getAbbreviation();
+	                	} else {
+	                        
+	                        return corner.getSymbol().toString();
+	                    }
+	                default:
+	                    return "?";
+	            }
+	        }
+	    }
+	    return "  "; // Angolo non trovato (non dovrebbe accadere)
+	}
+	@Override
+	public void printCardInCell() {
+		if(this.isFront())
+			{
+				System.out.print(getAbbreviatedCorner(CornerPosition.TOP_LEFT) + "        "+
+						getAbbreviatedCorner(CornerPosition.TOP_RIGHT));
+				System.out.println("\n");
+				System.out.println(getAbbreviatedCorner(CornerPosition.BOTTOM_LEFT) + "        "+
+						getAbbreviatedCorner(CornerPosition.BOTTOM_RIGHT)+"\n");
+			}else {
+				
+				System.out.print(getAbbreviatedCorner(CornerPosition.TOP_LEFT) + "        "+
+						getAbbreviatedCorner(CornerPosition.TOP_RIGHT));
+				System.out.println("\n\n    " + getKingdom().getAbbreviation() + "    \n");
+				System.out.println(getAbbreviatedCorner(CornerPosition.BOTTOM_RIGHT) + "        "+
+						getAbbreviatedCorner(CornerPosition.BOTTOM_LEFT)+"\n");
+		}
+	}
+	
+
+	
 	public String getCornerRepresentation(CornerPosition position) {
 		for (Corner corner : addCorners()) {
 			if (corner.getPosition().equals(position)) {
@@ -322,6 +376,8 @@ public abstract class GoldCard extends Card {
 					return "NULL";
 				case EMPTY:
 					return "EMPTY";
+				case HIDDEN:
+					return "HIDDEN";
 				case SYMBOL:
 					return corner.getSymbol().toString();
 				case SPECIALSYMBOL:
