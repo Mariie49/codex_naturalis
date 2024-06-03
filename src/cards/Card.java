@@ -10,11 +10,14 @@ public abstract class Card {
 	private int number;
 	private int row;
     private int column;
+    private int points;
 	
 	public Corner getCorner() {
 		return corner;
 	}
-
+	public int getPoints() {
+		return points;
+	}
 	public boolean isPlaced() {
 		return isPlaced;
 	}

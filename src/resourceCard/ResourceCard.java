@@ -202,7 +202,7 @@ public abstract class ResourceCard extends Card {
 	public CardType getType() {
 		return type;
 	}
-
+	@Override
 	public int getPoints() {
 		return points;
 	}

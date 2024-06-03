@@ -350,9 +350,7 @@ public abstract class InitialCard extends Card {
 		    else if (choice==1) {
 		    	 card = (InitialCard)d;
 		    }
-		    else {
-		    	
-		    }
+		  
 		    	
 
 		    System.out.println("You have chosen the " + (isFront() ? "front" : "back") + " side of the card.");

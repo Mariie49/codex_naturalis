@@ -199,7 +199,7 @@ public class Game {
 	 * @return vero se il giocatore ha piazzato la sua carta sul manoscritto e ne ha scelto un'altra
 	 */
 	public boolean turn (Player currentPlayer) {
-		Corner choosenCorner = null;
+		//Corner choosenCorner = null;
 		Card cardToPlay = null;
 		Card cardToTake = null;
 		ArrayList<Cell> availableCells;
@@ -207,127 +207,91 @@ public class Game {
 		currentTurn++;
 		playerTurnsPlayed[currentPlayer.getId()]++;
 
-		if (( !lastRound && deck.isEmpty() )|| (playerScores[currentPlayer.getId()]  >= 20 && !lastRound)) {
-			lastRound = true; // Salta il turno se il mazzo è vuoto o il giocatore ha raggiunto 20 punti
+		if ( !lastRound  || (playerScores[currentPlayer.getId()]  >= 20 && !lastRound)) {
+			lastRound = true; 
 		}
 
 		if (lastRound) {
-			// Verifica se il giocatore può partecipare all'ultimo round
+
 			if (playerTurnsPlayed[currentPlayer.getId()] < getMaxTurnsPlayed()) {
-				// Logica del turno per l'ultimo round
+
 				System.out.println("Ultimo Round - Giocatore " + currentPlayer.getName());
-				// ... (Estrazione carte, azioni, aggiornamento punteggio, ecc.)
+
 			}
 		} else {
 			// Logica del turno normale
 			System.out.println("Turno " + currentTurn + " - Giocatore " + currentPlayer.getName());
 			cardToPlay = currentPlayer.chooseCardToPlay();
-			
+
 			availableCells = matchManuscript.getAvailableDiagonalCells();
-            System.out.println("Celle disponibili:");
-            for (Cell cell : availableCells) {
-                System.out.println("(" + cell.getX() + ", " + cell.getY() + ")");
-            }
+			System.out.println("Celle disponibili:");
+			for (Cell cell : availableCells) {
+				System.out.println("(" + cell.getX() + ", " + cell.getY() + ")");
+			}
 
 			while (!cardPlaced) {
 				try {
-					// Ottieni input dall'utente per le coordinate (x, y)
-					int x = ...; // Leggi la coordinata x
-					int y = ...; // Leggi la coordinata y
+					System.out.print("Inserisci la coordinata x: ");
+					int x = sc.nextInt(); 
+
+					System.out.print("Inserisci la coordinata y: ");
+					int y = sc.nextInt(); 
 
 					matchManuscript.placeCardInManuscript(cardToPlay, x, y);
-					cardPlaced = true; // Esci dal ciclo se il posizionamento è riuscito
+					cardPlaced = true; 
 
 				} catch (IllegalArgumentException e) {
-	                if (e.getMessage().contains("Posizione non valida nel manoscritto")) {
-	                    System.out.println("Coordinate non valide. Riprova.");
-	                    availableCells = matchManuscript.getAvailableDiagonalCells();
-	                    System.out.println("Celle disponibili:");
-	                    for (Cell cell : availableCells) {
-	                        System.out.println("(" + cell.getX() + ", " + cell.getY() + ")");
-	                    }
-	                } else {
-	                    System.out.println("Errore: " + e.getMessage());
-	                    System.out.println("Riprova a inserire la carta.");
-	                }
-	            }
+					if (e.getMessage().contains("Posizione non valida nel manoscritto")) {
+						System.out.println("Coordinate non valide. Riprova.");
+						availableCells = matchManuscript.getAvailableDiagonalCells();
+						System.out.println("Celle disponibili:");
+						for (Cell cell : availableCells) {
+							System.out.println("(" + cell.getX() + ", " + cell.getY() + ")");
+						}
+					} else {
+						System.out.println("Errore: " + e.getMessage());
+						System.out.println("Riprova a inserire la carta.");
+					}
+				}
+			}
+			playerScores[currentPlayer.getId()] += currentPlayer.getPoints();
+			if ( isGameOver() || (lastRound && allPlayersHadLastTurn())) {
+				endGame();
 			}
 
-			// ... (Estrazione carte, azioni, aggiornamento punteggio, ecc.)
+
+
+
+
+			matchManuscript = currentPlayer.getPlayArea();
+
+			cardToPlay = currentPlayer.chooseCardToPlay();
+
+
+
+
+			do {
+				cardToTake = currentPlayer.chooseCardToTake(visibleCards);
+
+			}while(cardToTake == null);
+
+
+			currentPlayer.addCardToHand(cardToTake);
+
+
+
+			updatevisibleCards();
+			return true;
 		}
 
-		// Verifica fine partita dopo l'ultimo round
+
 		if (lastRound && allPlayersHadLastTurn()) {
 			endGame();
 		}
 
 
-		// Verifica fine partita
-		playerScores[currentPlayer.getId()] += currentPlayer.getPoints();
-		if (deck.isEmpty() || isGameOver() || (lastRound && allPlayersHadLastTurn())) {
-			endGame();
-		}
 
-
-
-
-		// Player plays a card from their hand and places it on the manuscript
-		//while (continuePlaying) {
-		matchManuscript = currentPlayer.getPlayArea();
-		// matchManuscript.displayPlayArea();
-		//System.out.println("Scegli un'azione:");
-		//System.out.println("1. Posiziona una carta");
-		//System.out.println("2. Termina il turno");
-
-		//int choice = scanner.nextInt();
-		//scanner.nextLine(); 
-
-		//switch (choice) {
-		//case 1:
-		cardToPlay = currentPlayer.chooseCardToPlay();
-		//choosenCorner = matchManuscript.chooseCardInPlayArea(scanner); // Interazione per posizionare una carta
-		//scanner.close();
-		//break;
-
-		//case 2:
-		//continuePlaying = false;
-		//System.out.println("Fine del turno!");
-		//return true;
-		//break;
-		//default:
-		//System.out.println("Scelta non valida.");
-		// }
-		//}
-
-		//matchManuscript.placeCard(cardToPlay, choosenCorner); // Chiama il metodo placeCard
-		//matchManuscript.displayPlayArea();
-
-
-		// Player takes a card from either the resource deck or the visible resource cards or the visible gold card or the gold deck
-		do {
-			cardToTake = currentPlayer.chooseCardToTake(visibleCards);
-
-		}while(cardToTake == null);
-
-
-		currentPlayer.addCardToHand(cardToTake);
-
-
-		// Update the visible cards for the next turn
-		updatevisibleCards();
-
-
-
-
-
-
-
-
-		//DA FINIRE
-
-		//return true;
-
-		//return false;
+		return false;
 	}
 
 
