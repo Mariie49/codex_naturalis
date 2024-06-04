@@ -41,6 +41,9 @@ public abstract class GoldCard extends Card {
 		ArrayList<Symbol> requirements = new ArrayList<>();
 		return requirements;
 	}
+	public static void resetGoldCards() {
+		assignedGoldCards =new ArrayList<>();
+	}
 
 	/* Da definire dopo aver fatto manuscript!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 	 * 
@@ -432,37 +435,56 @@ public abstract class GoldCard extends Card {
 	 */
 	@Override
 	public Card ChooseSide(Card d) {
-			GoldCard card = null;
-		    System.out.println("Do you want to choose the front or back side of the card?");
-		    System.out.println("1. Front");
-		    System.out.println("2. Back");
+	    GoldCard card = null;
+	    System.out.println("Scegli il fronte o il retro della carta?");
+	    System.out.println("1. Fronte");
+	    System.out.println("2. Retro");
 
-		    Scanner scanner = new Scanner(System.in);
-		    int choice = scanner.nextInt();
-		    int val = d.getNumber();
-		    switch (choice) {
-		        case 1:
-		        	card = (GoldCard)d;
-		            break;
-		        case 2:
-		            if (val > 0 && val < 11 ) 
-		            	card = new GoldCardBackFungi();
-		            else if (val > 10 && val < 21 ) 
-		            	card = new GoldCardBackAnimal();
-		            else if ( val > 20 && val < 31 )
-		            	card = new GoldCardBackPlant();
-		            else if (val > 30 && val < 41 )
-		            	card = new GoldCardBackInsect();
-		            break; 
-		        default:
-		            System.out.println("Invalid choice. Defaulting to front side.");
-		            card = (GoldCard)d;
-		            break;
-		    }
+	    Scanner scanner = new Scanner(System.in);
+	    boolean validChoice = false; 
 
-		    System.out.println("You have chosen the " + (isFront() ? "front" : "back") + " side of the card.");
-		    scanner.close();
-		    return card;
-		
+	    while (!validChoice) {
+	        if (scanner.hasNextInt()) { 
+	            int choice = scanner.nextInt();
+	            scanner.nextLine(); 
+
+	            if (choice == 1 || choice == 2) {
+	                validChoice = true; 
+	                int val = d.getNumber();
+	                switch (choice) {
+	                    case 1:
+	                        card = (GoldCard) d;
+	                        break;
+	                    case 2:
+	                        if (val > 0 && val < 11) {
+	                            card = new GoldCardBackFungi();
+	                        } else if (val > 10 && val < 21) {
+	                            card = new GoldCardBackAnimal();
+	                        } else if (val > 20 && val < 31) {
+	                            card = new GoldCardBackPlant();
+	                        } else if (val > 30 && val < 41) {
+	                            card = new GoldCardBackInsect();
+	                        }
+	                        break;
+	                    default:
+	                        
+	                        System.out.println("Scelta non valida. Impostato il fronte");
+	                        card = (GoldCard) d;
+	                        break;
+	                }
+	            } else {
+	                System.out.println("Scelta non valida. Inserisci 1 o 2.");
+	            }
+	        } else {
+	            System.out.println("Input non valido. Inserisci un numero.");
+	            scanner.next(); 
+	        }
+	    }
+
+	    scanner.close(); 
+
+	    System.out.println("Hai scelto " + (card.isFront() ? "fronte" : "retro")+ " della carta.");
+	    return card;
 	}
+
 }

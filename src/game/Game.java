@@ -17,18 +17,13 @@ import java.util.Scanner;
 public class Game {
 
 	private ArrayList<Player> playerList;
-	private ArrayList<ResourceCard> resourceCards;
-	private ArrayList<Card> handPlayerCards;
-	private ArrayList<GoldCard> goldCards;
 	//private ArrayList<ObjectiveCard> commonObjCard;
-	private ArrayList <InitialCard> initCards;
 	private ArrayList<Card> visibleCards;
 	private int[] playerScores;
 	private int[] playerTurnsPlayed;
-	//private ArrayList<Card> handPlayerCards;
+	private ArrayList<Card> handPlayerCards;
 	private PlayArea matchManuscript;
-	private int nPlayers;
-	private int firstEndedPoint;
+	private int numPlayers;
 	private int currentTurn = 0;
 	private boolean lastRound  = false;
 	private int maxTurns;
@@ -43,15 +38,12 @@ public class Game {
 
 	public Game() {
 		playerList = new ArrayList<Player>();
-		resourceCards = new ArrayList<ResourceCard>();
-		goldCards = new ArrayList<GoldCard>();
-		//commonObjCard = new ArrayList<ObjectiveCard>();
-		initCards = new ArrayList<InitialCard>();
+		GoldCard.resetGoldCards();
+		ResourceCard.resetResourceCards();
+		InitialCard.resetInirialCards();
+		//ObjectiveCard.resetObjectiveCards;
+		
 		visibleCards = new ArrayList<Card>();
-
-		handPlayerCards= new ArrayList <Card>();
-
-		firstEndedPoint  = 1;
 		currentTurn = 0;
 		maxTurns = 0;
 		//matchBoard = new Board();
@@ -61,30 +53,44 @@ public class Game {
 	/**
 	 * the constructor initialize a new game, using command line. 
 	 */
-	public void initGame() {
-		ArrayList<ResourceCard> deckResourceCard;
-		ArrayList<GoldCard> deckGoldCard;
-		ArrayList<InitialCard> deckInitialCard;
+	public void startGame() {
 		boolean stop = false;
-		Random rand;
-		int index;
+		int x = 0;
+		int y = 0;
+		
+		//int index;
 		String name;
-		//ArrayList<ObjectiveCard> allCommonGoals;
-		deckResourceCard = new ArrayList<ResourceCard>();
-
-		nPlayers = 0; //variabile che conta il numero di giocatori
+		numPlayers = 0; //variabile che conta il numero di giocatori
 		stop = false;
-		rand = new Random();
-
-		//deckCommonGoals = new ArrayList<ObjectiveCard>();
-		deckResourceCard = new ArrayList<ResourceCard>();
-		deckGoldCard = new ArrayList <GoldCard>();
-		deckInitialCard = new ArrayList <InitialCard>();
-		//Collections.addAll(resourceCard);
-
+		//bisognerebbe impostare una playArea sulla base del numero di giocatori. Da fare
+		 do {
+	            System.out.print("Quanti giocatori parteciperanno (da 2 a 4)? ");
+	            while (!sc.hasNextInt()) {
+	                System.out.println("Valore non valido. Inserisci un numero tra 2 e 4.");
+	                sc.next(); 
+	            }
+	            numPlayers = sc.nextInt();
+	        } while (numPlayers < 2 || numPlayers > 4);
+				
+		 if (numPlayers == 2) {
+			        x= 40;
+			        y= 40;
+			    } else if (numPlayers == 3) {
+			    	x= 28;
+			        y= 28;
+			        
+			    } else if (numPlayers == 4) {
+			    	x= 20;
+			        y= 20;
+			        
+			    }
+		 matchManuscript = new PlayArea(x, y);
+				
+			numPlayers = 0;	
+			
 		do {
 
-			System.out.println("Inserisci il nome del giocatore: " + (nPlayers + 1));
+			System.out.println("Inserisci il nome del giocatore: " + (numPlayers + 1));
 			//index = rand.nextInt(resourceCard.size()); //Chooses a random index in resourceCard? Serve?
 			name = sc.next();
 			boolean isDuplicated = false;
@@ -98,13 +104,13 @@ public class Game {
 			if (isDuplicated) {
 				System.out.println("Nome già utilizzato. Per favore, inserisci un nome diverso.");
 			} else {
-				playerList.add(new Player(nPlayers, name));
-				nPlayers++;
+				playerList.add(new Player(numPlayers, name, x, y));
+				numPlayers++;
 			}
-			if (nPlayers > 0 && nPlayers < 4) {
+			if (numPlayers > 0 && numPlayers < 4) {
 				System.out.println("Vuoi aggiungiure un nuovo giocatore?");
 				System.out.println("Si oppure no?");
-				if (!checkAnswer() && nPlayers > 1) {
+				if (!checkAnswer() && numPlayers > 1) {
 					stop = true;
 				}
 			}
@@ -113,10 +119,10 @@ public class Game {
 				stop = true;
 			}
 
-			System.out.println(nPlayers);
-		} while ( nPlayers < 4 && !stop);
+			System.out.println(numPlayers);
+		} while ( numPlayers < 4 && !stop);
 
-		playerScores = new int[nPlayers];
+		playerScores = new int[numPlayers];
 
 		System.out.print("I giocatori sono: " + " ");
 
@@ -125,18 +131,18 @@ public class Game {
 		}
 		System.out.println();
 		for (int i = 0; i < 2; i++) {
-			// Draw two visible resource cards from the resource deck
+			// due carte risorsa visibili
 			ResourceCard visibleResourceCard = ResourceCard.drawResourceCard();
 			visibleCards.add(visibleResourceCard);
 
 
-			// Draw two visible gold card from the gold deck
+			// due carte oro visibili
 			GoldCard visibleGoldCard = GoldCard.drawGoldCard();
 			visibleCards.add(visibleGoldCard);
 
 
 
-			// Draw two visible objective card from the objective deck
+			// due carte obiettivo comuni
 			//   ObjectiveCard comObjectiveCard = ObjectiveCard.drawCard();
 			//   commonObjCard.add(comObjectiveCard);
 		}
@@ -147,11 +153,14 @@ public class Game {
 			r.printCard();
 			System.out.println();
 		}
-
-
+		
+		
+		
+		
 		for (Player player : playerList) {
-			//player.setPlayArea(matchManuscript.getMatrGrid());//non sono sicura dell'effettiva correttezza di questa riga
+			
 			// Draw two resource cards from the resource deck
+			player.setPlayArea(matchManuscript);
 			System.out.println(" " + player.getName());
 			System.out.println("Pesco 2 carte risorsa e una carta oro. ");
 			for (int i = 0; i < 2; i++) {
@@ -216,12 +225,17 @@ public class Game {
 			if (playerTurnsPlayed[currentPlayer.getId()] < getMaxTurnsPlayed()) {
 
 				System.out.println("Ultimo Round - Giocatore " + currentPlayer.getName());
-
+				System.out.println("\nManoscritto del giocatore " + currentPlayer.getName() + " all'inizio del turno:");
+		        currentPlayer.getPlayArea().printManuscript();
+		        //da fare
 			}
 		} else {
-			// Logica del turno normale
+			
 			System.out.println("Turno " + currentTurn + " - Giocatore " + currentPlayer.getName());
+			System.out.println("\nManoscritto del giocatore " + currentPlayer.getName() + " all'inizio del turno:");
+	        currentPlayer.getPlayArea().printManuscript();
 			cardToPlay = currentPlayer.chooseCardToPlay();
+			
 
 			availableCells = matchManuscript.getAvailableDiagonalCells();
 			System.out.println("Celle disponibili:");
@@ -279,12 +293,13 @@ public class Game {
 			currentPlayer.addCardToHand(cardToTake);
 
 
-
+			System.out.println("\nManoscritto del giocatore " + currentPlayer.getName() + " alla fine del turno:");
+	        currentPlayer.getPlayArea().printManuscript();
 			updatevisibleCards();
 			return true;
 		}
 
-
+		//da fare
 		if (lastRound && allPlayersHadLastTurn()) {
 			endGame();
 		}
@@ -315,7 +330,7 @@ public class Game {
 	}
 
 	private void endGame() {
-		// Logica di fine partita (determinazione vincitore, ecc.)
+		//da fare
 		System.out.println("Partita terminata!");
 	}
 
@@ -338,14 +353,10 @@ public class Game {
 		return flag;
 	}
 
-	private void playTurns() {
-		while (!isGameOver()) {
-
-		}
-	}
+	
 
 	private boolean isGameOver() {
-		// Check if any player has reached 20 points
+		
 		for (Player player : playerList) {
 			if (player.getPoints() >= 20 ) {
 				return true;
@@ -354,17 +365,13 @@ public class Game {
 		return false;
 	}
 
-	private void calculateScores() {
-		for (Player player : playerList) {
-			player.totalPoints();
-		}
-	}
-
+	
+	//da fare
 	private void determineWinner() {
 		Player winner = null;
 		int maxScore = Integer.MIN_VALUE;
 
-		// Find the player with the highest score
+		
 		for (Player player : playerList) {
 			if (player.getPoints() > maxScore) {
 				maxScore = player.getPoints();
@@ -372,7 +379,7 @@ public class Game {
 			}
 		}
 
-		// Check for ties
+		// pareggio?
 		ArrayList <Player> winners = new ArrayList<>();
 		for (Player player : playerList) {
 			if (player.getPoints() == maxScore) {
@@ -380,7 +387,7 @@ public class Game {
 			}
 		}
 
-		// Declare the winner(s)
+		
 		if (winners.size() == 1) {
 			System.out.println("Il vincitore è: " + winners.get(0).getName());
 		} else {

@@ -48,7 +48,9 @@ public abstract class ResourceCard extends Card {
 		return corners;
 	}
 
-
+	public static void resetResourceCards() {
+		assignedResourceCards =new ArrayList<>();
+	}
 	/**
 	 * metodo per assegnare una carta  casuale
 	 * @return carta risorsa
@@ -351,39 +353,58 @@ public abstract class ResourceCard extends Card {
 	 */
 	@Override
 	public Card ChooseSide(Card d) {
-			ResourceCard card = null;
-		    System.out.println("Do you want to choose the front or back side of the card?");
-		    System.out.println("1. Front");
-		    System.out.println("2. Back");
+	    ResourceCard card = null;
+	    System.out.println("Scegli il fronte o il retro della carta?");
+	    System.out.println("1. Fronte");
+	    System.out.println("2. Retro");
 
-		    Scanner scanner = new Scanner(System.in);
-		    int choice = scanner.nextInt();
-		    int val = d.getNumber();
-		    switch (choice) {
-		        case 1:
-		        	card = (ResourceCard)d;
-		            break;
-		        case 2:
-		            if (val > 0 && val < 11 ) 
-		            	card=new ResourceCardBackPlant();
-		            else if (val > 10 && val < 21 ) 
-		            	card=new ResourceCardBackFungi();
-		            else if ( val > 20 && val < 31 )
-		            	card=new ResourceCardBackAnimal();
-		            else if (val > 30 && val < 41 )
-		            	card=new ResourceCardBackInsect();
-		            break; 
-		        default:
-		            System.out.println("Invalid choice. Defaulting to front side.");
-		            card = (ResourceCard)d;
-		            break;
-		    }
+	    Scanner scanner = new Scanner(System.in);
+	    boolean validChoice = false; 
 
-		    System.out.println("You have chosen the " + (isFront() ? "front" : "back") + " side of the card.");
-		    scanner.close();
-		    return card;
-		
+	    while (!validChoice) {
+	        if (scanner.hasNextInt()) { 
+	            int choice = scanner.nextInt();
+	            scanner.nextLine(); 
+
+	            if (choice == 1 || choice == 2) {
+	                validChoice = true; 
+	                int val = d.getNumber();
+	                switch (choice) {
+	                    case 1:
+	                        card = (ResourceCard) d;
+	                        break;
+	                    case 2:
+	                        if (val > 0 && val < 11) {
+	                            card = new ResourceCardBackPlant();
+	                        } else if (val > 10 && val < 21) {
+	                            card = new ResourceCardBackFungi();
+	                        } else if (val > 20 && val < 31) {
+	                            card = new ResourceCardBackAnimal();
+	                        } else if (val > 30 && val < 41) {
+	                            card = new ResourceCardBackInsect();
+	                        }
+	                        break;
+	                    default:
+	                        
+	                        System.out.println("Scelta non valida. Impostato il fronte");
+	                        card = (ResourceCard) d;
+	                        break;
+	                }
+	            } else {
+	                System.out.println("Scelta non valida. Inserisci 1 o 2.");
+	            }
+	        } else {
+	            System.out.println("Input non valido. Inserisci un numero.");
+	            scanner.next(); 
+	        }
+	    }
+
+	    scanner.close(); // Chiudi lo scanner solo alla fine del metodo
+
+	    System.out.println("Hai scelto il " + (card.isFront() ? "fronte" : "retro") + " della carta.");
+	    return card;
 	}
+
 	
 	
 

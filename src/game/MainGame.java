@@ -8,7 +8,7 @@ public class MainGame {
 		 Game match = new Game();
 	        ArrayList<Player> players;
 	        boolean gameNotEnded = true;
-	        match.initGame();
+	        match.startGame();
 	        
 
 	        players = match.getPlayerList();

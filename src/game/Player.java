@@ -31,9 +31,9 @@ public class Player {
 
 	 */
 
-	public Player(int id, String name) {
+	public Player(int id, String name, int x, int y) {
 		this.id = id;
-		this.personalManuscript = new PlayArea(20,20);
+		this.personalManuscript = new PlayArea(x,y);
 		this.name = name;
 		this.points = 0;
 		this.hand = new ArrayList <Card>();

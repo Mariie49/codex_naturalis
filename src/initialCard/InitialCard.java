@@ -51,7 +51,9 @@ public abstract class InitialCard extends Card {
 		return centralSymbol;
 	}
 
-
+	public static void resetInirialCards() {
+		assignedInitialCards =new ArrayList<>();
+	}
 
 
 	/**
@@ -306,57 +308,65 @@ public abstract class InitialCard extends Card {
 	 */
 	@Override
 	public Card ChooseSide(Card d) {
-			InitialCard card = null;
-		    System.out.println("Do you want to choose the front or back side of the card?");
-		    System.out.println("1. Front");
-		    System.out.println("2. Back");
+	    InitialCard card = null;
+	    System.out.println("Scegli il fronte o il retro della carta?");
+	    System.out.println("1. Fronte");
+	    System.out.println("2. Retro");
 
-		    Scanner in = new Scanner(System.in);
-		    int choice = in.nextInt();
-		    in.close();
-		    int val = d.getNumber();
-		    if (choice == 2) {
-		    	switch(val) {
-				case 1:
-					card=new InitialCard2();
-					break;
-				
-				case 3:
-					card=new InitialCard4();
-					break;
-				
-				case 5:
-					card=new InitialCard6();
-					break;
-				
-				case 7:
-					card=new InitialCard8();
-					break;
-				
-				case 9:
-					card=new InitialCard10();
-					break;
-				
-				case 11:
-					card=new InitialCard12();
-					break;
-				
-				default:
-		            System.out.println("Scelta non valida. Prendo il fronte.");
-		            card = (InitialCard)d;
-		            break;
-				}
-		    }
-		    else if (choice==1) {
-		    	 card = (InitialCard)d;
-		    }
-		  
-		    	
+	    Scanner in = new Scanner(System.in); 
+	    boolean validChoice = false; 
 
-		    System.out.println("You have chosen the " + (isFront() ? "front" : "back") + " side of the card.");
-		    return card;
-		
+	    while (!validChoice) {
+	        if (in.hasNextInt()) { 
+	            int choice = in.nextInt();
+	            in.nextLine(); 
+
+	            if (choice == 1 || choice == 2) {
+	                validChoice = true; 
+	                int val = d.getNumber();
+	                if (choice == 2) {
+	                    switch (val) {
+	                        case 1:
+	                            card = new InitialCard2();
+	                            break;
+	                        case 3:
+	                            card = new InitialCard4();
+	                            break;
+	                        case 5:
+	                            card = new InitialCard6();
+	                            break;
+	                        case 7:
+	                            card = new InitialCard8();
+	                            break;
+	                        case 9:
+	                            card = new InitialCard10();
+	                            break;
+	                        case 11:
+	                            card = new InitialCard12();
+	                            break;
+	                        default:
+	                            System.out.println("Scelta non valida. Impostato il fronte.");
+	                            card = (InitialCard) d;
+	                            break;
+	                    }
+	                } else {
+	                    card = (InitialCard) d;
+	                }
+	            } else {
+	                System.out.println("Scelta non valida. Inserisci 1 o 2.");
+	            }
+	        } else {
+	            System.out.println("Input non valido. Inserisci un numero.");
+	            in.next(); 
+	        }
+	    }
+
+	    in.close(); 
+
+	    System.out.println("Hai scelto  " + (card.isFront() ? "fronte" : "retro")+ " della carta.");
+	    return card;
 	}
+
 
 
 
