@@ -57,7 +57,7 @@ public class OldPlayArea {
 	    copy.maxCol = maxCol;
 	    return copy;
 	}
-
+	//verificare se funziona
 	/**
      * Places the initial card in the play area.
      *
