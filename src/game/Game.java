@@ -67,6 +67,7 @@ public class Game {
 	            System.out.print("Quanti giocatori parteciperanno (da 2 a 4)? ");
 	            while (!sc.hasNextInt()) {
 	                System.out.println("Valore non valido. Inserisci un numero tra 2 e 4.");
+	                System.out.println("Errore generico");
 	                sc.next(); 
 	            }
 	            numPlayers = sc.nextInt();
@@ -102,7 +103,7 @@ public class Game {
 			}
 
 			if (isDuplicated) {
-				System.out.println("Nome già utilizzato. Per favore, inserisci un nome diverso.");
+				System.out.println("Nome giï¿½ utilizzato. Per favore, inserisci un nome diverso.");
 			} else {
 				playerList.add(new Player(numPlayers, name, x, y));
 				numPlayers++;
@@ -345,7 +346,7 @@ public class Game {
 		choice = sc.next();
 		//while(!choice.contains("y") || !choice.equals("Yes") || !choice.equals("yes") || !choice.equals("N") || !choice.equals("No") || !choice.equals("no")) 
 		while (!choice.startsWith("s") && !choice.startsWith("S") && !choice.startsWith("n") && !choice.startsWith("N")) {
-			System.out.println("La risposta non è corretta. Rispondi si oppure no. ");
+			System.out.println("La risposta non ï¿½ corretta. Rispondi si oppure no. ");
 			choice = sc.next();
 		}
 		flag = choice.startsWith("s") || choice.startsWith("S");
@@ -389,9 +390,9 @@ public class Game {
 
 		
 		if (winners.size() == 1) {
-			System.out.println("Il vincitore è: " + winners.get(0).getName());
+			System.out.println("Il vincitore ï¿½: " + winners.get(0).getName());
 		} else {
-			System.out.println("Pareggio! Il vincitore è:");
+			System.out.println("Pareggio! Il vincitore ï¿½:");
 			for (Player player : winners) {
 				System.out.println(player.getName());
 			}
